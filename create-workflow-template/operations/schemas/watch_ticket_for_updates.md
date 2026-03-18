@@ -1,0 +1,225 @@
+# `watch_ticket_for_updates` — Schema Reference
+
+## Input Port: `input`
+
+- **`fields_to_watch`** (`[]enum`) **REQUIRED** — Fields to watch for changes. The trigger will only be fired if any of these fields are updated.
+  - Allowed: `applies_to_part`, `artifacts`, `body`, `channels`, `group`, `owned_by`, `reported_by`, `rev_org`, `severity`, `source_channel`... (15 total)
+- **`id`** (`id`) **REQUIRED** — The object to watch for updates
+  - ID type: `ticket`
+
+## Input Port: `callback`
+
+- **`event`** (`rich_text`) **REQUIRED** — The event that triggered the callback
+
+## Output Port: `output`
+
+- **`actual_close_date`** (`timestamp`) — Timestamp when the work was actually completed.
+- **`applies_to_part`** (`composite`)
+  - Composite: `_gen:applies_to_part`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+- **`artifacts`** (`[]composite`)
+  - Composite: `_gen:artifact-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+- **`body`** (`text`) — Body of the work object.
+- **`channels`** (`[]enum`) — Channels of the ticket.
+  - Allowed: `email`, `plug`, `slack`, `twilio`, `twilio_sms`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`custom_fields`** (`composite`) — Custom fields.
+  - Composite: `_gen:custom_fields`
+
+- **`custom_schema_fragments`** (`[]id`) — Custom schema fragments.
+  - ID type: `app_fragment`, `custom_type_fragment`, `stock_sf`, `tenant_fragment`
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+- **`group`** (`composite`)
+  - Composite: `_gen:group`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`member_type`** (`enum`) — Type of the members in the group.
+    - Allowed: `dev_user`, `rev_user`
+  - **`name`** (`text`) — Name of the group.
+  - **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+    - Composite: `_gen:sync_metadata`
+- **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+- **`is_frozen`** (`bool`) — Whether the object is frozen or not.
+- **`is_spam`** (`bool`) — Whether the ticket is spam.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`needs_response`** (`bool`) — Whether the ticket needs a response.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`reported_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`rev_org`** (`composite`)
+  - Composite: `_gen:rev_org`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `account`, `rev_org`
+- **`sentiment`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:sentiment`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`sentiment_modified_date`** (`timestamp`) — Timestamp when the sentiment was last modified.
+- **`sentiment_summary`** (`text`) — Summary justifying the sentiment.
+- **`severity`** (`enum`) — Severity of the ticket.
+  - Allowed: `blocker`, `high`, `low`, `medium`
+- **`sla_summary`** (`composite`) — SLA summary for the object.
+  - Composite: `_gen:sla_summary`
+
+- **`sla_tracker`** (`composite`)
+  - Composite: `_gen:ticket-properties.sla_tracker`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+- **`source_channel`** (`text`) — Source channel of the ticket.
+- **`stage`** (`composite`) — Describes the current stage of a work item.
+  - Composite: `_gen:stage`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`name`** (`text`) — The human readable name of the stage.
+- **`state_display_name`** (`text`) — Display name for current state.
+- **`stock_schema_fragment`** (`id`) — Stock schema fragment.
+  - ID type: `app_fragment`, `custom_type_fragment`, `stock_sf`, `tenant_fragment`
+- **`subtype`** (`text`) — Subtype corresponding to the custom type fragment.
+- **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+  - Composite: `_gen:work-base-properties.sync_metadata`
+  - **`external_record_id`** (`text`) — ID of the record in the external system.
+  - **`external_record_type`** (`text`) — Type of the external record in the external system.
+  - **`external_reference`** (`text`) — External record URL.
+  - **`origin_system`** (`text`) — Where the record was first created.
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+  - **`value`** (`text`) — The value for the object's association with the tag.
+- **`target_close_date`** (`timestamp`) — Timestamp when the work is expected to be complete.
+- **`title`** (`text`) **REQUIRED** — Title of the work object.
+- **`type`** (`enum`) **REQUIRED**
+  - Allowed: `issue`, `opportunity`, `task`, `ticket`
+- **`old_ticket`** (`composite`) — Old ticket object
+  - Composite: `_gen:implicit:ticket`
+  - **`actual_close_date`** (`timestamp`) — Timestamp when the work was actually completed.
+  - **`applies_to_part`** (`composite`)
+    - Composite: `_gen:applies_to_part`
+  - **`artifacts`** (`[]composite`)
+    - Composite: `_gen:artifact-summary`
+  - **`body`** (`text`) — Body of the work object.
+  - **`channels`** (`[]enum`) — Channels of the ticket.
+    - Allowed: `email`, `plug`, `slack`, `twilio`, `twilio_sms`
+  - **`created_by`** (`composite`)
+    - Composite: `_gen:created_by`
+  - **`created_date`** (`timestamp`) — Timestamp when the object was created.
+  - **`custom_fields`** (`composite`) — Custom fields.
+    - Composite: `_gen:custom_fields`
+  - **`custom_schema_fragments`** (`[]id`) — Custom schema fragments.
+    - ID type: `app_fragment`, `custom_type_fragment`, `stock_sf`, `tenant_fragment`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+  - **`group`** (`composite`)
+    - Composite: `_gen:group`
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`is_frozen`** (`bool`) — Whether the object is frozen or not.
+  - **`is_spam`** (`bool`) — Whether the ticket is spam.
+  - **`modified_by`** (`composite`)
+    - Composite: `_gen:modified_by`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`needs_response`** (`bool`) — Whether the ticket needs a response.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`reported_by`** (`[]composite`)
+    - Composite: `_gen:user-summary`
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`sentiment`** (`composite`) — The properties of an enum value.
+    - Composite: `_gen:sentiment`
+  - **`sentiment_modified_date`** (`timestamp`) — Timestamp when the sentiment was last modified.
+  - **`sentiment_summary`** (`text`) — Summary justifying the sentiment.
+  - **`severity`** (`enum`) — Severity of the ticket.
+    - Allowed: `blocker`, `high`, `low`, `medium`
+  - **`sla_summary`** (`composite`) — SLA summary for the object.
+    - Composite: `_gen:sla_summary`
+  - **`sla_tracker`** (`composite`)
+    - Composite: `_gen:ticket-properties.sla_tracker`
+  - **`source_channel`** (`text`) — Source channel of the ticket.
+  - **`stage`** (`composite`) — Describes the current stage of a work item.
+    - Composite: `_gen:stage`
+  - **`state_display_name`** (`text`) — Display name for current state.
+  - **`stock_schema_fragment`** (`id`) — Stock schema fragment.
+    - ID type: `app_fragment`, `custom_type_fragment`, `stock_sf`, `tenant_fragment`
+  - **`subtype`** (`text`) — Subtype corresponding to the custom type fragment.
+  - **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+    - Composite: `_gen:work-base-properties.sync_metadata`
+  - **`tags`** (`[]composite`) — Tags associated with the object.
+    - Composite: `_gen:tags`
+  - **`target_close_date`** (`timestamp`) — Timestamp when the work is expected to be complete.
+  - **`title`** (`text`) **REQUIRED** — Title of the work object.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `issue`, `opportunity`, `task`, `ticket`

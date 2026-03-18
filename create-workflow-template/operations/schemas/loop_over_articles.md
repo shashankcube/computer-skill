@@ -1,0 +1,126 @@
+# `loop_over_articles` — Schema Reference
+
+## Input Port: `input`
+
+- **`article_type`** (`[]enum`) — Filter for the type of articles.
+  - Allowed: `article`, `content_block`, `page`
+- **`limit`** (`int`) — The maximum number of articles to return. The default is '50'.
+- **`parent`** (`[]id`) — Filters for articles with the provided parent directories.
+  - ID type: `directory`
+- **`shared_with`** (`[]composite`) — Filter for articles based on intended audience.
+  - Composite: `_gen:shared_with`
+  - **`member`** (`id`) — ID of the group/member with whom the item is shared.
+    - ID type: `devu`, `group`, `revu`, `sysu`
+  - **`role`** (`id`) — Role ID of the group/member with whom the item is shared.
+    - ID type: `role`
+- **`status`** (`[]enum`) — Filters for status of the articles.
+  - Allowed: `archived`, `draft`, `published`, `review_needed`
+- **`sync_metadata`** (`composite`)
+  - Composite: `_gen:sync_metadata`
+  - **`external_reference`** (`[]text`) — Filters for issues with this specific external reference.
+  - **`last_sync_in`** (`composite`)
+    - Composite: `_gen:last_sync_in`
+  - **`last_sync_out`** (`composite`)
+    - Composite: `_gen:last_sync_out`
+  - **`origin_system`** (`[]text`) — Filters for issues synced from this specific origin system.
+- **`tags`** (`[]id`) — Filters for article with any of the provided tags.
+  - ID type: `tag`
+- **`applies_to_parts`** (`[]id`) — Filters for articles belonging to any parts.
+  - ID type: `product`, `feature`, `capability`, `enhancement`, `runnable`, `linkable`
+- **`owned_by`** (`[]id`) — Filters for articles owned by internal users only.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`created_by`** (`[]id`) — Filters for articles created by internal users only.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`modified_by`** (`[]id`) — Filters for articles modified by internal users only.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`authored_by`** (`[]id`) — Filters for articles authored by internal users only.
+  - ID type: `devu`, `svcacc`, `sysu`
+
+## Input Port: `block_callback`
+
+_No input fields (trigger or system-provided)._
+
+## Output Port: `block_start`
+
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `product`, `feature`, `capability`, `enhancement`, `runnable`, `linkable`
+- **`article_type`** (`enum`) — Type of the article.
+  - Allowed: `article`, `content_block`, `page`
+- **`authored_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `svcacc`, `sysu`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `svcacc`, `sysu`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the article was created.
+- **`description`** (`text`) — Description of the article.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `svcacc`, `sysu`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`modified_date`** (`timestamp`) — Timestamp when the article was last modified.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `svcacc`, `sysu`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`parent`** (`composite`)
+  - Composite: `_gen:parent`
+  - **`title`** (`text`) — Title of the directory.
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `directory`
+- **`resource`** (`composite`) — Resource details.
+  - Composite: `_gen:resource`
+  - **`artifacts`** (`[]composite`)
+    - Composite: `_gen:artifact-summary`
+  - **`url`** (`text`) — URL of the resource (relevant only for type url).
+- **`scope`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:scope`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+- **`status`** (`enum`) — Status of the article.
+  - Allowed: `archived`, `draft`, `published`, `review_needed`
+- **`tags`** (`[]composite`) — Tags associated with the article.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+  - **`value`** (`text`) — The value for the object's association with the tag.
+- **`title`** (`text`) — Title of the article.
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `article`

@@ -1,0 +1,79 @@
+# `create_article` — Schema Reference
+
+## Input Port: `input`
+
+- **`description`** (`text`) — Description for the article.
+- **`parent`** (`id`) — The parent directory of the article.
+  - ID type: `directory`
+- **`shared_with`** (`[]composite`) — Information about the role the member receives due to the share.
+  - Composite: `_gen:shared_with`
+  - **`member`** (`id`) — ID of the member the object is shared with.
+    - ID type: `devu`, `group`, `revu`, `sysu`
+  - **`role`** (`id`) — ID of the role that describes what privileges the membership entails.
+    - ID type: `role`
+- **`tags`** (`[]composite`) — Tags associated with the article.
+  - Composite: `_gen:tags`
+  - **`id`** (`id`) — The ID of the tag.
+    - ID type: `tag`
+- **`title`** (`text`) **REQUIRED** — Name of the article.
+- **`owned_by`** (`[]id`) **REQUIRED** — The users that own the article.
+  - ID type: `devu`, `sysu`, `svcacc`
+- **`status`** (`enum`) — Status of the article.
+  - Allowed: `draft`, `published`, `archived`, `review_needed`
+  - Default: `draft`
+- **`applies_to_parts`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`content`** (`text`) **REQUIRED** — The content of the article. Provide the content in HTML or Markdown format.
+
+## Output Port: `output`
+
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED** — Type of the user.
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`description`** (`text`) — Description of the article.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`parent`** (`composite`)
+  - Composite: `_gen:parent`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`title`** (`text`) — Title of the directory.
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `directory`
+- **`status`** (`enum`) — Status of the article.
+  - Allowed: `archived`, `draft`, `published`, `review_needed`
+- **`tags`** (`[]composite`) — Tags associated with the article.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`title`** (`text`) — Title of the article.
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `article`

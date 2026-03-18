@@ -1,0 +1,173 @@
+# `update_issue` — Schema Reference
+
+## Input Port: `input`
+
+- **`artifacts`** (`composite`)
+  - Composite: `_gen:artifacts`
+  - **`add`** (`[]id`) — Adds the provided artifacts (if not already present) to the field.
+    - ID type: `artifact`
+  - **`remove`** (`[]id`) — Removes the provided artifacts (if they exist) from the field.
+    - ID type: `artifact`
+  - **`set`** (`[]id`) — Sets the field to the provided artifacts.
+    - ID type: `artifact`
+- **`body`** (`text`) — Updated body of the issue, or unchanged if not provided.
+  - Validation: max_len=65536
+- **`developed_with`** (`composite`)
+  - Composite: `_gen:developed_with`
+  - **`set`** (`[]id`) — Sets the IDs of the parts associated with issue.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`owned_by`** (`composite`)
+  - Composite: `_gen:owned_by`
+  - **`set`** (`[]id`) — Sets the owner IDs to the provided user IDs. This must not be empty.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`priority_v2`** (`uenum`) — Priority enum id of the work based upon impact and criticality. The allowed ids can be extended by the user. Stock allowed values: ```   {     "id": 1,     "label": "P0",     "ordinal": 1,     "overridable": true   },   {     "id": 2,     "label": "P1",     "ordinal": 2,     "overridable": true   },   {     "id": 3,     "label": "P2",     "ordinal": 3,     "overridable": true   },   {     "id": 4,     "label": "P3",     "ordinal": 4,     "overridable": true   } ```
+- **`reported_by`** (`composite`)
+  - Composite: `_gen:reported_by`
+  - **`set`** (`[]id`) — Sets the reported by user IDs to the provided user IDs.
+    - ID type: `devu`, `sysu`, `svcacc`, `revu`
+- **`sprint`** (`id`) — Updates the sprint that the issue belongs to.
+  - ID type: `vista_group_item`
+- **`tags`** (`composite`)
+  - Composite: `_gen:tags`
+  - **`add`** (`[]composite`) — Adds the provided tags on the issue. Note: Provide either 'add' or 'remove' but not both.
+    - Composite: `_gen:add`
+  - **`remove`** (`[]composite`) — Removes the provided tags on the issue. Note: Provide either 'add' or 'remove' but not both.
+    - Composite: `_gen:remove`
+- **`target_close_date`** (`timestamp`) — Updates the timestamp for when the issue is expected to be complete.
+- **`target_start_date`** (`timestamp`) — Updates the timestamp for when the issue is expected to start.
+- **`title`** (`text`) — Updated title of the issue, or unchanged if not provided.
+  - Validation: min_len=1, max_len=256
+- **`applies_to_part`** (`id`) — Updates the part that the issue applies to.
+  - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`id`** (`id`) **REQUIRED** — The ID of issue to update.
+  - ID type: `issue`
+- **`stage`** (`id`) — The stage of the issue.
+  - ID type: `custom_stage`
+
+## Output Port: `output`
+
+- **`applies_to_part`** (`composite`)
+  - Composite: `_gen:applies_to_part`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+    - Composite: `_gen:sync_metadata`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+- **`artifacts`** (`[]composite`)
+  - Composite: `_gen:artifact-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+- **`body`** (`text`) — Body of the work object.
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`developed_with`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+    - Composite: `_gen:sync_metadata`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`estimated_effort`** (`double`) — Estimated effort to complete the issue.
+- **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`priority`** (`enum`) — Priority of the work based upon impact and criticality.
+  - Allowed: `p0`, `p1`, `p2`, `p3`
+- **`reported_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+- **`sprint`** (`composite`) — Vista group item.
+  - Composite: `_gen:sprint`
+  - **`end_date`** (`timestamp`) — Timestamp when the vista ends.
+  - **`id`** (`text`) **REQUIRED** — ID of the group item in don v2 format.
+  - **`name`** (`text`) **REQUIRED** — Name of the group.
+  - **`start_date`** (`timestamp`) — Timestamp when the vista starts.
+  - **`state`** (`enum`) — Defines the state of the group item.
+    - Allowed: `active`, `completed`, `planned`
+  - **`type`** (`enum`) **REQUIRED** — Type of the group object.
+    - Allowed: `curated`, `dynamic`
+- **`stage`** (`composite`) — Describes the current stage of a work item.
+  - Composite: `_gen:stage`
+  - **`name`** (`text`) **REQUIRED** — Current stage name of the work item.
+  - **`stage`** (`composite`) — The stage of the issue.
+    - Composite: `stage.stage`
+- **`state_display_name`** (`text`) — Display name for current state.
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Timestamp when the work is expected to be complete.
+- **`target_start_date`** (`timestamp`) — Target start date for the object.
+- **`title`** (`text`) **REQUIRED** — Title of the work object.
+- **`type`** (`enum`) **REQUIRED**
+  - Allowed: `issue`, `opportunity`, `task`, `ticket`
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `issue`

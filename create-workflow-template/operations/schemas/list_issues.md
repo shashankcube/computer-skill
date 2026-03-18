@@ -1,0 +1,108 @@
+# `list_issues` — Schema Reference
+
+## Input Port: `input`
+
+- **`actual_close_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_close_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`applies_to_part`** (`[]id`) — Filters for work belonging to any of the provided parts.
+  - ID type: `capability`, `component`, `custom_part`, `enhancement`, `feature`, `linkable`, `microservice`, `product`, `runnable`
+- **`created_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:created_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`external_ref`** (`[]text`) — Filters for work with any of the provided external references.
+- **`accounts`** (`[]id`) — Filters for issues with any of the provided accounts.
+  - ID type: `account`
+- **`actual_start_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_start_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`group`** (`[]id`) — Filters for issues belonging to specific groups.
+  - ID type: `group`
+- **`rev_orgs`** (`[]id`) — Filters for issues with any of the provided Rev organizations.
+  - ID type: `revo`
+- **`sla_summary`** (`composite`) — The filter for SLA summary.
+  - Composite: `_gen:sla_summary`
+  - **`stage`** (`[]enum`) — Filters for records with any of the provided SLA stages.
+    - Allowed: `breached`, `completed`, `paused`, `running`, `warning`
+  - **`target_time`** (`composite`) — Provides ways to specify date ranges on objects.
+    - Composite: `_gen:target_time`
+- **`sprint`** (`[]id`) — Filters for issues with any of the sprint.
+  - ID type: `vista_group_item`
+- **`target_start_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_start_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`modified_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:modified_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`reported_by`** (`[]id`) — Filters for work reported by any of these users.
+  - ID type: `devu`, `revu`, `svcacc`, `sysu`
+- **`tags`** (`[]id`) — Filters for work with any of the provided tags.
+  - ID type: `tag`
+- **`target_close_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_close_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`vista`** (`id`) — Filters for work belonging to the given vista.
+  - ID type: `vista`, `vista_group_item`
+- **`owned_by`** (`[]id`) — Filters for issues owned by any of these users.
+  - ID type: `devu`, `sysu`, `svcacc`
+- **`created_by`** (`[]id`) — Filters for issues created by any of these users.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`limit`** (`int`) — The maximum number of issues to return. The default value is 50 and maximum is 100.
+- **`stages`** (`[]id`) — List of IDs of the custom stages which will be used for filtering.
+  - ID type: `custom_stage`
+- **`state`** (`[]uenum`) — Filters for issues with any of the provided states.
+
+## Output Port: `output`
+
+- **`issues`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:work`
+  - **`actual_close_date`** (`timestamp`) — Timestamp when the work was actually completed.
+  - **`actual_start_date`** (`timestamp`) — Actual start date for the object.
+  - **`applies_to_part`** (`composite`)
+    - Composite: `_gen:applies_to_part`
+  - **`body`** (`text`) — Body of the work object.
+  - **`created_by`** (`composite`)
+    - Composite: `_gen:created_by`
+  - **`created_date`** (`timestamp`) — Timestamp when the object was created.
+  - **`developed_with`** (`[]composite`)
+    - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`estimated_effort`** (`double`) — Estimated effort to complete the issue.
+  - **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+  - **`modified_by`** (`composite`)
+    - Composite: `_gen:modified_by`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`reported_by`** (`[]composite`)
+    - Composite: `_gen:user-summary`
+  - **`sprint`** (`composite`) — Vista group item.
+    - Composite: `_gen:sprint`
+  - **`stage`** (`composite`) — Describes the current stage of a work item.
+    - Composite: `_gen:stage`
+  - **`state_display_name`** (`text`) — Display name for current state.
+  - **`tags`** (`[]composite`) — Tags associated with the object.
+    - Composite: `_gen:tags`
+  - **`target_close_date`** (`timestamp`) — Timestamp when the work is expected to be complete.
+  - **`target_start_date`** (`timestamp`) — Target start date for the object.
+  - **`title`** (`text`) **REQUIRED** — Title of the work object.
+  - **`id`** (`id`) **REQUIRED** — Globally unique enhancement ID.
+    - ID type: `issue`

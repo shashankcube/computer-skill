@@ -1,0 +1,103 @@
+# `get_sprint_board` — Schema Reference
+
+## Input Port: `input`
+
+- **`id`** (`id`) **REQUIRED** — The id of the vista.
+  - ID type: `vista`
+
+## Output Port: `output`
+
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the vista was created.
+- **`display_id`** (`text`) — Human-readable vista ID unique to the Dev organization.
+- **`flavor`** (`enum`) — Denotes the use case of the grouped vista.
+  - Allowed: `nnl`, `sprint_board`, `support_inbox`
+- **`is_default`** (`bool`) — Boolean to specify whether it's a default Vista or not.
+- **`items`** (`[]composite`)
+  - Composite: `_gen:atom-summary`
+  - **`account`** (`composite`)
+    - Composite: `_gen:account`
+  - **`applies_to_type`** (`enum`) — The type of the object on which the SLA is being tracked.
+    - Allowed: `conversation`, `incident`, `issue`, `ticket`
+  - **`article_type`** (`enum`) — Type of the article.
+    - Allowed: `article`, `content_block`, `page`
+  - **`dev_slug`** (`text`) **REQUIRED** — Customer chosen URL slug for the DevOrg.
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`groups`** (`[]composite`)
+    - Composite: `_gen:group-summary_5e635348`
+  - **`id`** (`text`) **REQUIRED** — Globally unique object ID.
+  - **`leaf_type`** (`text`) — Type of the object.
+  - **`link_type`** (`enum`) **REQUIRED** — Type of link used to define the relationship.
+    - Allowed: `custom_link`, `developed_with`, `imports`, `is_analyzed_by`, `is_converted_to`, `is_dependent_on`, `is_duplicate_of`, `is_follow_up_of`, `is_merged_into`, `is_parent_of`... (13 total)
+  - **`member_type`** (`enum`) — Type of the members in the group.
+    - Allowed: `dev_user`, `rev_user`
+  - **`metric_name`** (`text`) **REQUIRED** — Human readable metric name of the UOM.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`priority`** (`enum`) — Priority of the work based upon impact and criticality.
+    - Allowed: `p0`, `p1`, `p2`, `p3`
+  - **`priority_v2`** (`composite`) — The properties of an enum value.
+    - Composite: `_gen:priority_v2`
+  - **`question`** (`text`) — The Question.
+  - **`resource`** (`composite`) — Resource details.
+    - Composite: `_gen:resource`
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`severity`** (`composite`) — The properties of an enum value.
+    - Composite: `_gen:severity`
+  - **`sla_type`** (`enum`) — Type of the SLA.
+    - Allowed: `external`, `internal`
+  - **`sprint`** (`composite`) — Vista group item.
+    - Composite: `_gen:sprint`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`state_display_name`** (`text`) — Display name for current state.
+  - **`status`** (`enum`) **REQUIRED** — Status determines how an item can be used. In 'draft' status an item can be edited but can't be used. When 'published' the item can longer be edited but can be used. 'Archived' is read-only.
+    - Allowed: `archived`, `draft`, `published`
+  - **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+    - Composite: `_gen:sync_metadata`
+  - **`title`** (`text`) — Title of the article.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `account`, `app_fragment`, `article`, `auth_token`, `capability`, `code_change`, `command`, `conversation`, `custom_object`, `custom_type_fragment`... (47 total)
+  - **`unit`** (`composite`) — Unit encapsulates the name of the unit and the type of the unit. For example, '#Number of API calls' where name is 'number_of_api_calls' and type is 'number'.
+    - Composite: `_gen:unit`
+  - **`users`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the vista was modified.
+- **`name`** (`text`) **REQUIRED** — Name of the vista.
+- **`shared_with`** (`[]composite`) — Users and groups associated with vista.
+  - Composite: `_gen:shared_with`
+  - **`member`** (`composite`)
+    - Composite: `_gen:member`
+  - **`role`** (`composite`)
+    - Composite: `_gen:role`
+- **`type`** (`enum`) **REQUIRED** — Type of vista object.
+  - Allowed: `curated`, `dynamic`, `grouped`
+- **`id`** (`id`) **REQUIRED** — The ID of the Sprint Board
+  - ID type: `vista`

@@ -1,0 +1,75 @@
+# `question_answer_updated` — Schema Reference
+
+## Input Port: `input`
+
+- **`fields_to_watch`** (`[]enum`) **REQUIRED** — Fields to watch for changes. The trigger will only be fired if any of these fields are updated.
+  - Allowed: `question`, `answer`, `status`
+
+## Output Port: `output`
+
+- **`answer`** (`text`) — The Answer.
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — ID of the part attached to the QA.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the QA was created.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`modified_date`** (`timestamp`) — Timestamp when the QA was modified.
+- **`question`** (`text`) — The Question.
+- **`status`** (`enum`) — Status of the question answer.
+  - Allowed: `archived`, `discarded`, `draft`, `published`, `review_needed`
+- **`suggested_answer`** (`text`) — An alternative answer suggested by the QA generation algorithm.
+- **`suggested_for_deletion`** (`bool`) — Whether the QA was marked for deletion by the QA generation algorithm.
+- **`topic`** (`text`) — The topic to which the QA belongs.
+- **`verified`** (`bool`) — Whether the QA was verified.
+- **`old_question_answer`** (`composite`) — Old question_answer object
+  - Composite: `_gen:implicit:question_answer`
+  - **`answer`** (`text`) — The Answer.
+  - **`applies_to_parts`** (`[]composite`)
+    - Composite: `_gen:part-summary`
+  - **`created_by`** (`composite`)
+    - Composite: `_gen:created_by`
+  - **`created_date`** (`timestamp`) — Timestamp when the object was created.
+  - **`modified_by`** (`composite`)
+    - Composite: `_gen:modified_by`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`question`** (`text`) — The Question.
+  - **`status`** (`enum`) — Status of the question answer.
+    - Allowed: `archived`, `discarded`, `draft`, `published`, `review_needed`
+  - **`suggested_answer`** (`text`) — An alternative answer suggested by the Q/A generation algorithm.
+  - **`suggested_for_deletion`** (`bool`) — Whether the Q/A was marked for deletion by the Q/A generation algorithm.
+  - **`topic`** (`text`) — The topic to which the QA belongs.
+  - **`verified`** (`bool`) — Whether the Q/A was verified.
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `question_answer`
+- **`id`** (`id`) **REQUIRED** — The ID of the updated QA
+  - ID type: `question_answer`

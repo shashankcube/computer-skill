@@ -1,0 +1,112 @@
+# `loop_over_enhancements` — Schema Reference
+
+## Input Port: `input`
+
+- **`accounts`** (`[]id`) — Filters for enhancement by its accounts.
+  - ID type: `account`
+- **`actual_close_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_close_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`actual_start_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_start_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`opportunities`** (`[]id`) — Filters for enhancement by its opportunities.
+  - ID type: `opportunity`
+- **`stage_v2`** (`[]id`) — List of IDs of the custom stages which will be used for filtering.
+  - ID type: `custom_stage`
+- **`target_close_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_close_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`target_start_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_start_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`tickets`** (`[]id`) — Filters for enhancement by its tickets.
+  - ID type: `ticket`
+- **`parent_part`** (`composite`) — The filter for specifying parent part.
+  - Composite: `_gen:parent_part`
+  - **`level`** (`int`) — Number of levels to fetch the part hierarchy up to.
+  - **`parts`** (`[]id`) **REQUIRED** — Part IDs to fetch the hierarchy for.
+    - ID type: `capability`, `enhancement`, `feature`, `product`
+- **`tags`** (`[]id`) — Filters for part with any of the provided tags.
+  - ID type: `tag`
+- **`owned_by`** (`[]id`) — Filters for enhancements owned by any of these users.
+  - ID type: `devu`, `sysu`, `svcacc`
+- **`created_by`** (`[]id`) — Filters for enhancements created by any of these users.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`limit`** (`int`) — The maximum number of enhancements to return.Maximum is 1000.
+
+## Input Port: `block_callback`
+
+_No input fields (trigger or system-provided)._
+
+## Output Port: `block_start`
+
+- **`actual_close_date`** (`timestamp`) — Actual close date for the object.
+- **`actual_start_date`** (`timestamp`) — Actual start date for the object.
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — ID of the user
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the Enhancement was created.
+- **`description`** (`text`) — Description of the Enhancement.
+- **`display_id`** (`text`) — Human-readable Enhancement ID unique to the Dev organization.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`modified_date`** (`timestamp`) — Timestamp when the Enhancement was modified.
+- **`name`** (`text`) **REQUIRED** — Name of the Enhancement.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Target close date for the object.
+- **`target_start_date`** (`timestamp`) — Target start date for the object.
+- **`id`** (`id`) **REQUIRED** — The ID of the Enhancement
+  - ID type: `enhancement`
+- **`stage_v2`** (`composite`) — The stage of the enhancement.
+  - Composite: `_gen:stage_v2`
+  - **`stage`** (`composite`)
+    - Composite: `_gen:stage`
+  - **`state`** (`composite`)
+    - Composite: `_gen:state`

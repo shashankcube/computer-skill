@@ -1,0 +1,117 @@
+# `get_issue` — Schema Reference
+
+## Input Port: `input`
+
+- **`id`** (`id`) **REQUIRED** — The id of the issue.
+  - ID type: `issue`
+
+## Output Port: `output`
+
+- **`actual_close_date`** (`timestamp`) — Timestamp when the work was actually completed.
+- **`actual_start_date`** (`timestamp`) — Actual start date for the object.
+- **`applies_to_part`** (`composite`)
+  - Composite: `_gen:applies_to_part`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`body`** (`text`) — The body of the issue.
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the issue was created.
+- **`developed_with`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`display_id`** (`text`) — Display ID of the issue.
+- **`estimated_effort`** (`double`) — Estimated effort to complete the issue.
+- **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the issue was last modified.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`priority`** (`enum`) — Priority of the work based upon impact and criticality.
+  - Allowed: `p0`, `p1`, `p2`, `p3`
+- **`reported_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`sprint`** (`composite`) — Vista group item.
+  - Composite: `_gen:sprint`
+  - **`end_date`** (`timestamp`) — Timestamp when the vista ends.
+  - **`name`** (`text`) **REQUIRED** — Name of the group.
+  - **`start_date`** (`timestamp`) — Timestamp when the vista starts.
+  - **`state`** (`enum`) — Defines the state of the group item.
+    - Allowed: `active`, `completed`, `planned`
+  - **`type`** (`enum`) **REQUIRED** — Type of the group object.
+    - Allowed: `curated`, `dynamic`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `vista_group_item`
+- **`stage`** (`composite`) — Current stage of the issue.
+  - Composite: `_gen:stage`
+  - **`name`** (`text`) **REQUIRED** — Current stage name of the work item.
+  - **`stage`** (`composite`) — The stage of the issue.
+    - Composite: `stage.stage`
+- **`state_display_name`** (`text`) — Display name for current state.
+- **`tags`** (`[]composite`) — Tags associated with the issue.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Timestamp when the issue is expected to be complete.
+- **`target_start_date`** (`timestamp`) — Target start date for the issue.
+- **`title`** (`text`) **REQUIRED** — Title of the issue.
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `issue`

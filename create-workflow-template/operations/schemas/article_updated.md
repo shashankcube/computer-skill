@@ -1,0 +1,135 @@
+# `article_updated` — Schema Reference
+
+## Input Port: `input`
+
+- **`fields_to_watch`** (`[]uenum`) **REQUIRED** — Fields to watch for changes. The trigger will only be fired if any of these fields are updated.
+
+## Output Port: `output`
+
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`article_type`** (`enum`) — Type of the article.
+  - Allowed: `article`, `content_block`, `page`
+- **`authored_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED** — Type of the user.
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`created_date`** (`timestamp`) — Timestamp when the article was created.
+- **`description`** (`text`) — The description of the article.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`extracted_content`** (`[]composite`)
+  - Composite: `_gen:artifact-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`file`** (`composite`) — Defines a file object.
+    - Composite: `_gen:file`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `artifact`
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`parent`** (`composite`)
+  - Composite: `_gen:parent`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`title`** (`text`) — Title of the directory.
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `directory`
+- **`rank`** (`text`) — Rank of the article.
+- **`resource`** (`composite`) — Resource details.
+  - Composite: `_gen:resource`
+  - **`artifacts`** (`[]composite`)
+    - Composite: `_gen:artifact-summary`
+  - **`url`** (`text`) — URL of the resource (relevant only for type url).
+- **`scope`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:scope`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`status`** (`enum`) — Status of the article.
+  - Allowed: `archived`, `draft`, `published`, `review_needed`
+- **`tags`** (`[]composite`) — Tags associated with the article.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`title`** (`text`) — Title of the article.
+- **`old_article`** (`composite`) — Old article object
+  - Composite: `_gen:implicit:article`
+  - **`applies_to_parts`** (`[]composite`)
+    - Composite: `_gen:part-summary`
+  - **`article_type`** (`enum`) — Type of the article.
+    - Allowed: `article`, `content_block`, `page`
+  - **`authored_by`** (`[]composite`)
+    - Composite: `_gen:user-summary`
+  - **`created_by`** (`composite`)
+    - Composite: `_gen:created_by`
+  - **`created_date`** (`timestamp`) — Timestamp when the object was created.
+  - **`description`** (`text`) — Description of the article.
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`extracted_content`** (`[]composite`)
+    - Composite: `_gen:artifact-summary`
+  - **`modified_by`** (`composite`)
+    - Composite: `_gen:modified_by`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`num_downvotes`** (`int`) — Number of downvotes on the article.
+  - **`num_upvotes`** (`int`) — Number of upvotes on the article.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`parent`** (`composite`)
+    - Composite: `_gen:parent`
+  - **`rank`** (`text`) — Rank of the article.
+  - **`resource`** (`composite`) — Resource details.
+    - Composite: `_gen:resource`
+  - **`scope`** (`composite`) — The properties of an enum value.
+    - Composite: `_gen:scope`
+  - **`status`** (`enum`) — Status of the article.
+    - Allowed: `archived`, `draft`, `published`, `review_needed`
+  - **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+    - Composite: `_gen:article-properties.sync_metadata`
+  - **`tags`** (`[]composite`) — Tags associated with the article.
+    - Composite: `_gen:tags`
+  - **`title`** (`text`) — Title of the article.
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `article`
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `article`

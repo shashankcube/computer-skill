@@ -1,0 +1,152 @@
+# `meeting_updated` — Schema Reference
+
+## Input Port: `input`
+
+- **`fields_to_watch`** (`[]enum`) **REQUIRED** — Fields to watch for changes. The trigger will only be fired if any of these fields are updated.
+  - Allowed: `description`, `title`, `scheduled_date`, `members`, `parent`, `transcript`, `artifacts`, `state`
+
+## Output Port: `output`
+
+- **`artifacts`** (`[]composite`)
+  - Composite: `_gen:artifact-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`file`** (`composite`) — Defines a file object.
+    - Composite: `_gen:file`
+  - **`id`** (`id`) **REQUIRED** — Globally unique artifact ID.
+    - ID type: `artifact`
+- **`channel`** (`enum`) — The channel of meeting.
+  - Allowed: `amazon_connect`, `google_meet`, `offline`, `other`, `teams`, `zoom`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`description`** (`text`) — Description of the meeting.
+- **`direction`** (`enum`) — Direction of meeting - meetings within an organization are internal. Meetings with external customers can be incoming or outgoing depending on who initiates them.
+  - Allowed: `incoming`, `internal`, `outgoing`
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`ended_date`** (`timestamp`) — Time at which meeting ended.
+- **`external_ref`** (`text`) — External reference of the meeting. This is the identifier from the meeting channel/provider.
+- **`external_url`** (`text`) — External URL associated with the meeting.
+- **`members`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`, `revu`
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`organizer`** (`composite`)
+  - Composite: `_gen:organizer`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`, `revu`
+- **`parent`** (`composite`)
+  - Composite: `_gen:parent`
+  - **`account`** (`composite`)
+    - Composite: `_gen:account`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`stage`** (`composite`) — Describes the current stage of a work item.
+    - Composite: `_gen:stage`
+  - **`state_display_name`** (`text`) — Display name for current state.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `account`, `opportunity`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `account`, `opportunity`
+- **`recording_url`** (`text`) — Recording URL of the meeting.
+- **`scheduled_date`** (`timestamp`) — Time at which meeting was scheduled to start.
+- **`state`** (`enum`) — The state of meeting.
+  - Allowed: `canceled`, `completed`, `no_show`, `ongoing`, `rejected`, `rescheduled`, `scheduled`, `waiting`
+- **`tags`** (`[]composite`) — Tags associated with the meeting.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`title`** (`text`) — Title of the meeting object.
+- **`transcript`** (`composite`)
+  - Composite: `_gen:transcript`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`file`** (`composite`) — Defines a file object.
+    - Composite: `_gen:file`
+  - **`id`** (`id`) **REQUIRED** — ID of the artifact containing the transcript.
+    - ID type: `artifact`
+- **`visibility`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:visibility`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`old_meeting`** (`composite`) — Old meeting object
+  - Composite: `_gen:implicit:meeting`
+  - **`artifacts`** (`[]composite`)
+    - Composite: `_gen:artifact-summary`
+  - **`channel`** (`enum`) — The channel of meeting.
+    - Allowed: `amazon_connect`, `google_meet`, `offline`, `other`, `teams`, `zoom`
+  - **`created_by`** (`composite`)
+    - Composite: `_gen:created_by`
+  - **`created_date`** (`timestamp`) — Timestamp when the object was created.
+  - **`description`** (`text`) — Description of the meeting.
+  - **`direction`** (`enum`) — Direction of meeting - meetings within an organization are internal. Meetings with external customers can be incoming or outgoing depending on who initiates them.
+    - Allowed: `incoming`, `internal`, `outgoing`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`ended_date`** (`timestamp`) — Time at which meeting ended.
+  - **`external_ref`** (`text`) — External reference of the meeting. This is the identifier from the meeting channel/provider.
+  - **`external_url`** (`text`) — External URL associated with the meeting.
+  - **`members`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`modified_by`** (`composite`)
+    - Composite: `_gen:modified_by`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`organizer`** (`composite`)
+    - Composite: `_gen:organizer`
+  - **`parent`** (`composite`)
+    - Composite: `_gen:parent`
+  - **`recording_url`** (`text`) — Recording URL of the meeting.
+  - **`scheduled_date`** (`timestamp`) — Time at which meeting was scheduled to start.
+  - **`state`** (`enum`) — The state of meeting.
+    - Allowed: `canceled`, `completed`, `no_show`, `ongoing`, `rejected`, `rescheduled`, `scheduled`, `waiting`
+  - **`tags`** (`[]composite`) — Tags associated with the meeting.
+    - Composite: `_gen:tags`
+  - **`title`** (`text`) — Title of the meeting object.
+  - **`transcript`** (`composite`)
+    - Composite: `_gen:transcript`
+  - **`visibility`** (`composite`) — The properties of an enum value.
+    - Composite: `_gen:visibility`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `meeting`
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `meeting`

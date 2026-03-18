@@ -1,0 +1,120 @@
+# `get_conversation` — Schema Reference
+
+## Input Port: `input`
+
+- **`id`** (`id`) **REQUIRED** — The id of the conversation.
+  - ID type: `conversation`
+
+## Output Port: `output`
+
+- **`account`** (`composite`)
+  - Composite: `_gen:account`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`id`** (`id`) **REQUIRED** — The id of the account.
+    - ID type: `account`
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — ID of the part attached to the conversation.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `revu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the conversation was created.
+- **`description`** (`text`) — The description of the conversation.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`group`** (`composite`)
+  - Composite: `_gen:group`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`id`) **REQUIRED** — ID of the group
+    - ID type: `group`
+- **`is_frozen`** (`bool`) — Whether the object is frozen or not.
+- **`last_external_message_date`** (`timestamp`) — Timestamp of the last message in external discussion.
+- **`members`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — ID of the user
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `sys_user`, `service_account`
+- **`metadata`** (`composite`) — Metadata on conversation.
+  - Composite: `_gen:metadata`
+  - **`url_context`** (`text`) — URL from which the conversation was created if the conversation was created via PLuG.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `revu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the conversation was modified.
+- **`owned_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — ID of the user
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `sys_user`, `service_account`
+- **`sentiment`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:sentiment`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`label`** (`enum`) **REQUIRED** — The display label of the enum value.
+    - Allowed: `Delighted`, `Happy`, `Neutral`, `Unhappy`, `Frustrated`
+- **`sentiment_modified_date`** (`timestamp`) — Timestamp when the sentiment was last modified.
+- **`sentiment_summary`** (`text`) — Summary justifying the sentiment.
+- **`source_channel`** (`text`) — Source channel for the conversation.
+- **`stage`** (`composite`) — The stage of the conversation.
+  - Composite: `_gen:conversation-properties.stage`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`enum`) — The stage of the conversation.
+    - Allowed: `new`, `suspended`, `needs_response`, `waiting_on_user`, `hold`, `resolved`, `archived`
+- **`tags`** (`[]composite`) — The tags associated with the conversation.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`title`** (`text`) — The title of the conversation.
+- **`id`** (`id`) **REQUIRED** — The ID of the conversation
+  - ID type: `conversation`

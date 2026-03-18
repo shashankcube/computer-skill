@@ -1,0 +1,74 @@
+# `list_enhancements` — Schema Reference
+
+## Input Port: `input`
+
+- **`accounts`** (`[]id`) — Filters for enhancement by its accounts.
+  - ID type: `account`
+- **`actual_close_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_close_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`actual_start_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_start_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`opportunities`** (`[]id`) — Filters for enhancement by its opportunities.
+  - ID type: `opportunity`
+- **`stage_v2`** (`[]id`) — List of IDs of the custom stages which will be used for filtering.
+  - ID type: `custom_stage`
+- **`target_close_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_close_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`target_start_date_v2`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_start_date_v2`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`tickets`** (`[]id`) — Filters for enhancement by its tickets.
+  - ID type: `ticket`
+- **`parent_part`** (`composite`) — The filter for specifying parent part.
+  - Composite: `_gen:parent_part`
+  - **`level`** (`int`) — Number of levels to fetch the part hierarchy up to.
+  - **`parts`** (`[]id`) **REQUIRED** — Part IDs to fetch the hierarchy for.
+    - ID type: `capability`, `enhancement`, `feature`, `product`
+- **`tags`** (`[]id`) — Filters for part with any of the provided tags.
+  - ID type: `tag`
+- **`owned_by`** (`[]id`) — Filters for enhancements owned by any of these users.
+  - ID type: `devu`, `sysu`, `svcacc`
+- **`created_by`** (`[]id`) — Filters for enhancements created by any of these users.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`limit`** (`int`) — The maximum number of enhancements to return. The default value is 50 and maximum is 100.
+
+## Output Port: `output`
+
+- **`enhancements`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:part`
+  - **`actual_close_date`** (`timestamp`) — Actual close date for the object.
+  - **`actual_start_date`** (`timestamp`) — Actual start date for the object.
+  - **`created_by`** (`composite`)
+    - Composite: `_gen:created_by`
+  - **`created_date`** (`timestamp`) — Timestamp when the object was created.
+  - **`description`** (`text`) — Description of the part.
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`modified_by`** (`composite`)
+    - Composite: `_gen:modified_by`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`tags`** (`[]composite`) — Tags associated with the object.
+    - Composite: `_gen:tags`
+  - **`target_close_date`** (`timestamp`) — Target close date for the object.
+  - **`target_start_date`** (`timestamp`) — Target start date for the object.
+  - **`id`** (`id`) **REQUIRED** — Globally unique enhancement ID.
+    - ID type: `enhancement`
+  - **`stage_v2`** (`composite`) — Describes the current stage of a object.
+    - Composite: `_gen:stage_v2`

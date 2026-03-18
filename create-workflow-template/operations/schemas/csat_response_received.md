@@ -1,0 +1,73 @@
+# `csat_response_received` — Schema Reference
+
+## Input Port: `input`
+
+- **`fields_to_watch`** (`[]enum`) **REQUIRED** — Fields to watch for changes. The trigger will only be fired if any of these fields are updated.
+  - Allowed: `stage`, `response`
+- **`object_types`** (`[]enum`) **REQUIRED** — The type of objects to watch for CSAT responses
+  - Allowed: `ticket`, `conversation`
+
+## Output Port: `output`
+
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `revu`, `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `revu`, `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`recipient`** (`composite`)
+  - Composite: `_gen:recipient`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `revu`, `devu`, `sysu`, `svcacc`
+- **`response_channel`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:response_channel`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`stage`** (`composite`) — The stage of the survey response.
+  - Composite: `_gen:stage`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`survey`** (`id`) — The ID of the survey for which response is taken.
+  - ID type: `survey`
+- **`object`** (`id`) — The ID of the object for which survey is taken.
+  - ID type: `conversation`, `ticket`
+- **`response`** (`composite`) — Response for the CSAT survey.
+  - Composite: `csat_response`
+  - **`rating`** (`int`) **REQUIRED** — User rating for the survey.
+  - **`feedback`** (`text`) — User feedback for the survey.

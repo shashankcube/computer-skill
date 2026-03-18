@@ -1,0 +1,217 @@
+# `loop_over_issues` — Schema Reference
+
+## Input Port: `input`
+
+- **`actual_close_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_close_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`applies_to_part`** (`[]id`) — Filters for issues belonging to any of the provided parts.
+  - ID type: `capability`, `component`, `custom_part`, `enhancement`, `feature`, `linkable`, `microservice`, `product`, `runnable`
+- **`created_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:created_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`external_ref`** (`[]text`) — Filters for work with any of the provided external references.
+- **`accounts`** (`[]id`) — Filters for issues with any of the provided accounts.
+  - ID type: `account`
+- **`actual_start_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:actual_start_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`group`** (`[]id`) — Filters for issues belonging to specific groups.
+  - ID type: `group`
+- **`rev_orgs`** (`[]id`) — Filters for issues with any of the provided Rev organizations.
+  - ID type: `revo`
+- **`sla_summary`** (`composite`) — The filter for SLA summary.
+  - Composite: `_gen:sla_summary`
+  - **`stage`** (`[]enum`) — Filters for records with any of the provided SLA stages.
+    - Allowed: `breached`, `completed`, `paused`, `running`, `warning`
+  - **`target_time`** (`composite`) — Provides ways to specify date ranges on objects.
+    - Composite: `_gen:target_time`
+- **`sprint`** (`[]id`) — Filters for issues with any of the sprint.
+  - ID type: `vista_group_item`
+- **`target_start_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_start_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`modified_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:modified_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`reported_by`** (`[]id`) — Filters for work reported by any of these users.
+  - ID type: `devu`, `revu`, `svcacc`, `sysu`
+- **`sync_metadata`** (`composite`)
+  - Composite: `_gen:sync_metadata`
+  - **`external_reference`** (`[]text`) — Filters for issues with this specific external reference.
+  - **`last_sync_in`** (`composite`)
+    - Composite: `_gen:last_sync_in`
+  - **`last_sync_out`** (`composite`)
+    - Composite: `_gen:last_sync_out`
+  - **`origin_system`** (`[]text`) — Filters for issues synced from this specific origin system.
+- **`tags`** (`[]id`) — Filters for work with any of the provided tags.
+  - ID type: `tag`
+- **`target_close_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:target_close_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`vista`** (`id`) — Filters for work belonging to the given vista.
+  - ID type: `vista`, `vista_group_item`
+- **`owned_by`** (`[]id`) — Filters for issues owned by any of these users.
+  - ID type: `devu`, `sysu`, `svcacc`
+- **`created_by`** (`[]id`) — Filters for issues created by any of these users.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`limit`** (`int`) — The maximum number of issues to return. Maximum is 1000.
+- **`stages`** (`[]id`) — List of IDs of the custom stages which will be used for filtering.
+  - ID type: `custom_stage`
+- **`state`** (`[]uenum`) — Filters for issues with any of the provided states.
+
+## Input Port: `block_callback`
+
+_No input fields (trigger or system-provided)._
+
+## Output Port: `block_start`
+
+- **`id`** (`id`) **REQUIRED** — Current Issue.
+  - ID type: `issue`
+- **`body`** (`text`) — The description of the issue.
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`target_close_date`** (`timestamp`) — Timestamp when the work is expected to be complete.
+- **`target_start_date`** (`timestamp`) — Target start date for the object.
+- **`title`** (`text`) **REQUIRED** — Title of the work object.
+- **`applies_to_part`** (`composite`)
+  - Composite: `_gen:applies_to_part`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`artifacts`** (`[]composite`)
+  - Composite: `_gen:artifact-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `artifact`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`developed_with`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`estimated_effort`** (`double`) — Estimated effort to complete the issue.
+- **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`reported_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`sprint`** (`composite`) — Vista group item.
+  - Composite: `_gen:sprint`
+  - **`end_date`** (`timestamp`) — Timestamp when the vista ends.
+  - **`name`** (`text`) **REQUIRED** — Name of the group.
+  - **`start_date`** (`timestamp`) — Timestamp when the vista starts.
+  - **`state`** (`enum`) — Defines the state of the group item.
+    - Allowed: `active`, `completed`, `planned`
+  - **`type`** (`enum`) **REQUIRED** — Type of the group object.
+    - Allowed: `curated`, `dynamic`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `vista_group_item`
+- **`stage`** (`composite`) — Describes the current stage of a work item.
+  - Composite: `_gen:stage`
+  - **`name`** (`text`) **REQUIRED** — Current stage name of the work item.
+  - **`stage`** (`composite`) — The stage of the issue.
+    - Composite: `stage.stage`
+- **`state_display_name`** (`text`) — Display name for current state.
+- **`sync_metadata`** (`composite`) — Sync information for records synced into/from DevRev.
+  - Composite: `_gen:work-base-properties.sync_metadata`
+  - **`external_record_id`** (`text`) — ID of the record in the external system.
+  - **`external_record_type`** (`text`) — Type of the external record in the external system.
+  - **`external_reference`** (`text`) — External record URL.
+  - **`last_sync_in`** (`composite`) — Information about the sync to DevRev.
+    - Composite: `_gen:work-base-properties.sync_metadata.last_sync_in`
+  - **`last_sync_out`** (`composite`) — Information about the sync from DevRev.
+    - Composite: `_gen:last_sync_out`
+  - **`origin_system`** (`text`) — Where the record was first created.
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`

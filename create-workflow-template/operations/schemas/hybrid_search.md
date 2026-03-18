@@ -1,0 +1,144 @@
+# `hybrid_search` — Schema Reference
+
+## Input Port: `input`
+
+_No input fields (trigger or system-provided)._
+
+## Output Port: `output`
+
+- **`object_ids`** (`id`) — A list of Object-IDs
+  - ID type: `account`, `article`, `capability`, `component`, `conversation`, `dashboard`, `dev_user`, `enhancement`, `feature`, `group`, `incident`, `issue`, `linkable`, `object_member`, `opportunity`, `product`, `question_answer`, `rev_org`, `rev_user`, `runnable`, `tag`, `ticket`, `vista`, `widget`
+- **`account_search_summary`** (`[]composite`) — AccountSearchSummary objects
+  - Composite: `_gen:implicit:account_search_summary`
+  - **`account`** (`composite`)
+    - Composite: `_gen:account`
+  - **`comments`** (`[]composite`) — Comments on the work.
+    - Composite: `_gen:comments`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`article_search_summary`** (`[]composite`) — ArticleSearchSummary objects
+  - Composite: `_gen:implicit:article_search_summary`
+  - **`article`** (`composite`)
+    - Composite: `_gen:article`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`work_search_summary`** (`[]composite`) — WorkSearchSummary objects
+  - Composite: `_gen:implicit:work_search_summary`
+  - **`comments`** (`[]composite`) — Comments on the work.
+    - Composite: `_gen:comments`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+  - **`work`** (`composite`)
+    - Composite: `_gen:work`
+- **`part_search_summary`** (`[]composite`) — PartSearchSummary objects
+  - Composite: `_gen:implicit:part_search_summary`
+  - **`comments`** (`[]composite`) — Comments on the work.
+    - Composite: `_gen:comments`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`part`** (`composite`)
+    - Composite: `_gen:part`
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`link_search_summary`** (`[]composite`) — LinkSearchSummary objects
+  - Composite: `_gen:implicit:link_search_summary`
+  - **`link`** (`composite`)
+    - Composite: `_gen:link`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`artifact_search_summary`** (`[]composite`) — ArtifactSearchSummary objects
+  - Composite: `_gen:implicit:artifact_search_summary`
+  - **`artifact`** (`composite`)
+    - Composite: `_gen:artifact`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`conversation_search_summary`** (`[]composite`) — ConversationSearchSummary objects
+  - Composite: `_gen:implicit:conversation_search_summary`
+  - **`comments`** (`[]composite`) — Comments on the work.
+    - Composite: `_gen:comments`
+  - **`conversation`** (`composite`)
+    - Composite: `_gen:conversation`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`tag_search_summary`** (`[]composite`) — TagSearchSummary objects
+  - Composite: `_gen:implicit:tag_search_summary`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`org_search_summary`** (`[]composite`) — OrgSearchSummary objects
+  - Composite: `_gen:implicit:org_search_summary`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`org`** (`composite`)
+    - Composite: `_gen:org`
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`user_search_summary`** (`[]composite`) — UserSearchSummary objects
+  - Composite: `_gen:implicit:user_search_summary`
+  - **`comments`** (`[]composite`) — Comments on the work.
+    - Composite: `_gen:comments`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`phone_numbers`** (`[]text`) — Phone numbers of the user.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+  - **`user`** (`composite`)
+    - Composite: `_gen:user`
+- **`group_search_summary`** (`[]composite`) — GroupSearchSummary objects
+  - Composite: `_gen:implicit:group_search_summary`
+  - **`group`** (`composite`)
+    - Composite: `_gen:group`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`question_answer_search_summary`** (`[]composite`) — QuestionAnswerSearchSummary objects
+  - Composite: `_gen:implicit:question_answer_search_summary`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`question_answer`** (`composite`)
+    - Composite: `_gen:question_answer`
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`vista_search_summary`** (`[]composite`) — VistaSearchSummary objects
+  - Composite: `_gen:implicit:vista_search_summary`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+  - **`vista`** (`composite`) — Represents a collection of DevRev objects.
+    - Composite: `_gen:vista`
+- **`dashboard_search_summary`** (`[]composite`) — DashboardSearchSummary objects
+  - Composite: `_gen:implicit:dashboard_search_summary`
+  - **`dashboard`** (`composite`)
+    - Composite: `_gen:dashboard`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`custom_object_search_summary`** (`[]composite`) — CustomObjectSearchSummary objects
+  - Composite: `_gen:implicit:custom_object_search_summary`
+  - **`custom_object`** (`composite`)
+    - Composite: `_gen:custom_object`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`workflow_search_summary`** (`[]composite`) — WorkflowSearchSummary objects
+  - Composite: `_gen:implicit:workflow_search_summary`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+  - **`workflow`** (`composite`)
+    - Composite: `_gen:workflow`
+- **`operation_search_summary`** (`[]composite`) — OperationSearchSummary objects
+  - Composite: `_gen:implicit:operation_search_summary`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`operation`** (`composite`)
+    - Composite: `_gen:operation`
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`dm_search_summary`** (`[]composite`) — DmSearchSummary objects
+  - Composite: `_gen:implicit:dm_search_summary`
+  - **`comments`** (`[]composite`) — Comments on the DM.
+    - Composite: `_gen:comments`
+  - **`dm`** (`composite`)
+    - Composite: `_gen:dm`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+- **`meeting_search_summary`** (`[]composite`) — MeetingSearchSummary objects
+  - Composite: `_gen:implicit:meeting_search_summary`
+  - **`meeting`** (`composite`)
+    - Composite: `_gen:meeting`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.
+  - **`title`** (`text`) — The title of the meeting.
+- **`directory_search_summary`** (`[]composite`) — DirectorySearchSummary objects
+  - Composite: `_gen:implicit:directory_search_summary`
+  - **`directory`** (`composite`)
+    - Composite: `_gen:directory`
+  - **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+  - **`snippet`** (`text`) — Concatenated text snippets from all search hits for this object. This may contain duplicate content.

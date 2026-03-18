@@ -1,0 +1,79 @@
+# `list_sessions` — Schema Reference
+
+## Input Port: `input`
+
+- **`app_version`** (`[]text`) — List of app versions to filter mobile sessions.
+- **`created_at`** (`composite`) — Date range filter for when the session was created.
+  - Composite: `_gen:created_at`
+  - **`after`** (`timestamp`) — Start of the date range for session creation (inclusive).
+  - **`before`** (`timestamp`) — End of the date range for session creation (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`custom_events`** (`composite`) — Filters mobile sessions based on custom events recorded during the session.
+  - Composite: `_gen:custom_events`
+  - **`event_name`** (`[]text`) — List of custom event names to match within the mobile session.
+  - **`exception_class_name`** (`[]text`) — List of exception class names to filter by crash or ANR events.
+  - **`properties_filters`** (`[]composite`) — Filters applied on custom event properties using attribute-based conditions.
+    - Composite: `_gen:observability-sessions-list-request-session-custom-attribute-filter`
+- **`device_model`** (`[]text`) — List of device models to filter mobile sessions.
+- **`has_exception_occurred`** (`bool`) — Filter by exception occurrence.
+- **`is_anr`** (`bool`) — Indicates whether the app became unresponsive (Application Not Responding).
+- **`is_crash`** (`bool`) — Indicates whether the app crashed during the session.
+- **`limit`** (`int`) — The maximum number of sessions to return. The default value is 20 and maximum is 100.
+- **`manufacturer`** (`[]text`) — List of device manufacturers to filter mobile sessions.
+- **`network_type`** (`[]text`) — List of network types to filter mobile sessions.
+- **`os_version`** (`[]text`) — List of operating system versions to filter mobile sessions.
+- **`rage_tap`** (`bool`) — Indicates whether the user performed rapid repeated clicks (rage taps) during the session.
+- **`response_time_list`** (`composite`) — Filters mobile sessions based on API response times and network performance.
+  - Composite: `_gen:response_time_list`
+  - **`api_name`** (`[]text`) — List of API endpoint URLs involved in the session.
+  - **`request_properties`** (`[]composite`) — Filters applied on API request properties.
+    - Composite: `_gen:observability-sessions-list-request-session-custom-attribute-filter_585728df`
+  - **`response_properties`** (`[]composite`) — Filters applied on API response properties.
+    - Composite: `_gen:observability-sessions-list-request-session-custom-attribute-filter_585728df`
+  - **`round_trip_time`** (`composite`) — Total time taken for the API request and response cycle.
+    - Composite: `_gen:round_trip_time`
+- **`rev_org`** (`[]id`) — List of workspace/organization IDs associated with the session.
+  - ID type: `revo`
+- **`rev_user`** (`[]id`) — List of contact/user IDs associated with the session.
+  - ID type: `revu`
+- **`screen_name`** (`[]text`) — List of screen names visited during the mobile session.
+- **`session_attributes`** (`[]composite`) — Filters mobile sessions based on custom session-level attributes.
+  - Composite: `_gen:observability-sessions-list-request-session-custom-attribute-filter_585728df`
+  - **`attribute_path`** (`text`) **REQUIRED** — Key or path of the attribute to filter on.
+  - **`equals`** (`[]text`) — Array of string values to match exactly.
+  - **`filter_type`** (`enum`) **REQUIRED** — Type of string filter to apply.
+    - Allowed: `string_filter`
+- **`session_duration`** (`composite`) — Filters mobile sessions by total length (duration range in milliseconds).
+  - Composite: `_gen:session_duration`
+  - **`max_ms`** (`int`) **REQUIRED** — Maximum session duration in milliseconds.
+  - **`min_ms`** (`int`) **REQUIRED** — Minimum session duration in milliseconds.
+- **`version_key`** (`text`) **REQUIRED** — Unique app ID to which the session belongs; also referred to as the integration key.
+  - Validation: min_len=1
+- **`type`** (`enum`) **REQUIRED** — Specifies the category of the client where the session occurred: Mobile or Web.
+  - Allowed: `mobile`
+- **`platform`** (`enum`) **REQUIRED** — Indicates the environment where the session was recorded.
+  - Allowed: `android`, `ios`
+
+## Output Port: `output`
+
+- **`sessions`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:observability-session`
+  - **`created_at`** (`timestamp`) **REQUIRED** — The session creation date.
+  - **`device_metadata`** (`composite`) — Metadata describing the device and environment where the mobile session was recorded.
+    - Composite: `_gen:device_metadata`
+  - **`has_exception_occurred`** (`bool`) **REQUIRED** — Whether an exception occurred.
+  - **`is_anr`** (`bool`) **REQUIRED** — Whether the app became unresponsive (Application Not Responding) during this session.
+  - **`is_crash`** (`bool`) **REQUIRED** — Whether the app crashed during this session.
+  - **`rage_tap`** (`bool`) **REQUIRED** — Whether the user performed rapid repeated clicks (rage taps) during this session.
+  - **`recording_ids`** (`[]text`) — The list of recording IDs in this session.
+  - **`rev_org_id`** (`id`) — The workspace ID associated with this mobile session.
+    - ID type: `revo`
+  - **`rev_user_id`** (`id`) — The contact ID associated with this mobile session.
+    - ID type: `revu`
+  - **`session_duration_ms`** (`int`) **REQUIRED** — The session duration in milliseconds.
+  - **`session_id`** (`text`) **REQUIRED** — The unique session identifier.
+  - **`platform`** (`enum`) — The platform type for the device.
+    - Allowed: `android`, `ios`
+  - **`type`** (`enum`) **REQUIRED** — The type of session.
+    - Allowed: `mobile`

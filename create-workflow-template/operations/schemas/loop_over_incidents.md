@@ -1,0 +1,113 @@
+# `loop_over_incidents` — Schema Reference
+
+## Input Port: `input`
+
+- **`created_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:created_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`include_child_parts`** (`bool`) — Whether to include items belonging to children of any of the provided parts.
+- **`mitigated_date`** (`composite`) — Provides ways to specify date ranges on objects.
+  - Composite: `_gen:mitigated_date`
+  - **`after`** (`timestamp`) — Filters for objects created after the provided timestamp (inclusive).
+  - **`before`** (`timestamp`) — Filters for objects created before the provided timestamp (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`stage`** (`[]id`) — Filters for incidents in any of the provided stages.
+  - ID type: `custom_stage`
+- **`owned_by`** (`[]id`) — Filters for incidents owned by internal users only.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`created_by`** (`[]id`) — Filters for incidents created by internal users only.
+  - ID type: `devu`, `svcacc`, `sysu`
+- **`applies_to_parts`** (`[]id`) — Filters for incidents that apply to any of the provided parts.
+  - ID type: `product`, `feature`, `capability`, `enhancement`, `runnable`, `linkable`
+- **`stages`** (`[]id`) — List of IDs of the custom stages which will be used for filtering.
+  - ID type: `custom_stage`
+- **`limit`** (`int`) — The maximum number of incidents to return. Maximum is 1000.
+
+## Input Port: `block_callback`
+
+_No input fields (trigger or system-provided)._
+
+## Output Port: `block_start`
+
+- **`acknowledged_date`** (`timestamp`) — Timestamp when the incident was acknowledged.
+- **`actual_close_date`** (`timestamp`) — Timestamp when the incident was actually resolved.
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — ID of the part attached to the incident.
+    - ID type: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+- **`body`** (`text`) — Body of the incident.
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `svcacc`, `sysu`
+- **`created_date`** (`timestamp`) — Timestamp when the incident was created.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`identified_date`** (`timestamp`) — Time when the incident was identified/reported.
+- **`impact`** (`composite`) — Details of the impact due to the incident.
+  - Composite: `_gen:impact`
+- **`mitigated_date`** (`timestamp`) — Timestamp when the incident was mitigated.
+- **`modified_date`** (`timestamp`) — Timestamp when the incident was last modified.
+- **`owned_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`id`** (`id`) **REQUIRED** — ID of the user.
+    - ID type: `devu`, `svcacc`, `sysu`
+- **`pia`** (`[]composite`)
+  - Composite: `_gen:article-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`resource`** (`composite`) — Resource details.
+    - Composite: `_gen:resource`
+  - **`title`** (`text`) — Title of the article.
+  - **`id`** (`id`) **REQUIRED** — ID of the article.
+    - ID type: `article`
+- **`playbooks`** (`[]composite`)
+  - Composite: `_gen:article-summary_95fca9c7`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`resource`** (`composite`) — Resource details.
+    - Composite: `_gen:resource`
+  - **`title`** (`text`) — Title of the article.
+  - **`id`** (`id`) **REQUIRED** — ID of the article.
+    - ID type: `article`
+- **`reported_by`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:reported_by`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+- **`severity`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:severity`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`stage`** (`composite`) — Describes the current stage of a object.
+  - Composite: `_gen:stage`
+  - **`state`** (`composite`) — The state of the incident
+    - Composite: `_gen:state`
+  - **`stage`** (`composite`) — The stage of the incident.
+    - Composite: `stage.stage`
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Timestamp when the incident is expected to be resolved.
+- **`title`** (`text`) **REQUIRED** — Title of the incident.
+- **`id`** (`id`) **REQUIRED** — ID of the incident.
+  - ID type: `incident`

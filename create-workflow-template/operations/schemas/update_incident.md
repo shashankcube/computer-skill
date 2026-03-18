@@ -1,0 +1,156 @@
+# `update_incident` — Schema Reference
+
+## Input Port: `input`
+
+- **`acknowledged_date`** (`timestamp`) — Timestamp when the incident was acknowledged.
+- **`applies_to_parts`** (`composite`)
+  - Composite: `_gen:applies_to_parts`
+  - **`set`** (`[]id`) — Sets the parts to which the incident is applicable to
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`body`** (`text`) — Body of the incident.
+- **`id`** (`id`) **REQUIRED** — The ID of the incident to be updated.
+  - ID type: `incident`
+- **`identified_date`** (`timestamp`) — Time when the incident was identified/reported.
+- **`impact`** (`composite`)
+  - Composite: `_gen:impact`
+  - **`count`** (`int`) — Count of customers impacted.
+  - **`customer_ids`** (`composite`)
+    - Composite: `_gen:customer_ids`
+- **`mitigated_date`** (`timestamp`) — Timestamp when the incident was mitigated.
+- **`owned_by`** (`composite`)
+  - Composite: `_gen:owned_by`
+  - **`set`** (`[]id`) — The users that own the incident
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`pia`** (`composite`)
+  - Composite: `_gen:pia`
+  - **`set`** (`[]id`) — The article id of the Post-Incident Analysis(PIA) of the incident.
+    - ID type: `article`
+- **`severity`** (`int`) — Severity of the incident.
+- **`tags`** (`composite`)
+  - Composite: `_gen:tags`
+  - **`set`** (`[]composite`) — Sets the tags associated with the object.
+    - Composite: `_gen:set`
+- **`target_close_date`** (`timestamp`) — Timestamp when the incident is expected to be resolved.
+- **`title`** (`text`) — Title of the incident.
+- **`stage`** (`id`) — The stage of the incident.
+  - ID type: `custom_stage`
+
+## Output Port: `output`
+
+- **`acknowledged_date`** (`timestamp`) — Timestamp when the incident was acknowledged.
+- **`actual_close_date`** (`timestamp`) — Timestamp when the incident was actually resolved.
+- **`applies_to_parts`** (`[]composite`)
+  - Composite: `_gen:part-summary`
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`owned_by`** (`[]composite`) **REQUIRED**
+    - Composite: `_gen:user-summary`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — ID of the part attached to the incident.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`body`** (`text`) — Body of the incident.
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`identified_date`** (`timestamp`) — Time when the incident was identified/reported.
+- **`impact`** (`composite`) — Details of the impact due to the incident.
+  - Composite: `_gen:impact`
+  - **`count`** (`composite`) — The properties of an enum value.
+    - Composite: `_gen:count`
+  - **`customer_ids`** (`[]composite`)
+    - Composite: `_gen:account-summary`
+- **`mitigated_date`** (`timestamp`) — Timestamp when the incident was mitigated.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`owned_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`pia`** (`[]composite`)
+  - Composite: `_gen:article-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`resource`** (`composite`) — Resource details.
+    - Composite: `_gen:resource`
+  - **`title`** (`text`) — Title of the article.
+  - **`id`** (`id`) **REQUIRED** — ID of the article.
+    - ID type: `article`
+- **`playbooks`** (`[]composite`)
+  - Composite: `_gen:article-summary_95fca9c7`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`resource`** (`composite`) — Resource details.
+    - Composite: `_gen:resource`
+  - **`title`** (`text`) — Title of the article.
+  - **`id`** (`id`) **REQUIRED** — ID of the article.
+    - ID type: `article`
+- **`reported_by`** (`composite`) — The entity that reported the incident.
+  - Composite: `_gen:reported_by`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The label for the entity that reported the incident. Use id instead as labels can change overtime.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+- **`severity`** (`composite`) — Severity of the incident.
+  - Composite: `_gen:severity`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The label for the severity. Use id instead as labels can change overtime.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`source`** (`composite`) — The source of the incident.
+  - Composite: `_gen:source`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The label for the source. Use id instead as labels can change overtime.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`stage`** (`composite`) — Stage of the incident.
+  - Composite: `_gen:stage`
+  - **`stage`** (`composite`) — The stage of the incident.
+    - Composite: `stage.stage`
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Timestamp when the incident is expected to be resolved.
+- **`title`** (`text`) **REQUIRED** — Title of the incident.
+- **`id`** (`id`) **REQUIRED** — ID of the incident.
+  - ID type: `incident`

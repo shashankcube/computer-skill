@@ -1,0 +1,188 @@
+# `update_ticket` — Schema Reference
+
+## Input Port: `input`
+
+- **`id`** (`id`) **REQUIRED** — The id of the ticket.
+  - ID type: `ticket`
+- **`title`** (`text`) — Updated title of the ticket, or unchanged if not provided.
+  - Validation: min_len=1, max_len=256
+- **`body`** (`text`) — Updated body of the ticket, or unchanged if not provided.
+  - Validation: max_len=65536
+- **`group`** (`id`) — Updates the group that the ticket is associated with.
+  - ID type: `group`
+- **`owned_by`** (`composite`)
+  - Composite: `_gen:owned_by`
+  - **`set`** (`[]id`) — Sets the owner IDs to the provided user IDs. This must not be empty.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`applies_to_part`** (`id`) — Updates the part that the ticket applies to.
+  - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`severity`** (`enum`) — Severity of the ticket.
+  - Allowed: `blocker`, `high`, `low`, `medium`
+- **`is_spam`** (`bool`) — Updates whether the ticket is spam.
+- **`needs_response`** (`bool`) — Updates whether the ticket needs a response.
+- **`reported_by`** (`composite`)
+  - Composite: `_gen:reported_by`
+  - **`set`** (`[]id`) — Sets the users that reported the work to the provided user IDs.
+    - ID type: `devu`, `sysu`, `svcacc`, `revu`
+- **`rev_org`** (`id`) — Updates the workspace that the ticket is associated with.
+  - ID type: `revo`
+- **`tags`** (`composite`)
+  - Composite: `_gen:tags`
+  - **`add`** (`[]composite`) — Adds the provided tags on the ticket. Note: Provide either 'add' or 'remove' but not both.
+    - Composite: `_gen:add`
+  - **`remove`** (`[]composite`) — Removes the provided tags on the ticket. Note: Provide either 'add' or 'remove' but not both.
+    - Composite: `_gen:remove`
+- **`target_close_date`** (`timestamp`) — Updates the timestamp for when the ticket is expected to be complete.
+- **`account`** (`id`) — Updates the account that the ticket is associated with.
+  - ID type: `account`
+- **`channels`** (`composite`)
+  - Composite: `_gen:channels`
+  - **`set`** (`[]enum`) — Sets the channels to the provided channels.
+    - Allowed: `email`, `plug`, `slack`, `twilio`, `twilio_sms`
+- **`is_frozen`** (`bool`) — Whether the ticket is frozen.
+- **`sentiment`** (`uenum`) — The sentiment of the ticket.
+- **`sentiment_modified_date`** (`timestamp`) — Timestamp at which sentiment was last modified.
+- **`sentiment_summary`** (`text`) — Summary justifying the current sentiment.
+- **`stage`** (`id`) — The stage of the ticket.
+  - ID type: `custom_stage`
+- **`visibility`** (`uenum`) — Visibility enum ID of the ticket. Choose 'internal' for tickets only visible to your team members, or 'external' for tickets that can be shared with customers and external stakeholders.
+
+## Output Port: `output`
+
+- **`account`** (`composite`)
+  - Composite: `_gen:account`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`id`** (`id`) **REQUIRED** — The id of the account.
+    - ID type: `account`
+- **`actual_close_date`** (`timestamp`) — Timestamp when the work was actually completed.
+- **`applies_to_part`** (`composite`)
+  - Composite: `_gen:applies_to_part`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`name`** (`text`) **REQUIRED** — Name of the part.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `capability`, `enhancement`, `feature`, `linkable`, `product`, `runnable`
+  - **`id`** (`id`) **REQUIRED** — The id of the part.
+    - ID type: `capability`, `feature`, `product`, `runnable`, `linkable`, `enhancement`
+- **`body`** (`text`) — The body of the ticket.
+- **`channels`** (`[]enum`) — Channels of the ticket.
+  - Allowed: `email`, `plug`, `slack`, `twilio`, `twilio_sms`
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user
+    - ID type: `devu`, `sysu`, `svcacc`, `revu`
+- **`created_date`** (`timestamp`) — Timestamp when the ticket was created.
+- **`display_id`** (`text`) — Display ID of the ticket.
+- **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+- **`group`** (`composite`)
+  - Composite: `_gen:group`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`id`** (`id`) **REQUIRED** — The id of the group
+    - ID type: `group`
+- **`is_frozen`** (`bool`) — Whether the object is frozen or not.
+- **`is_spam`** (`bool`) — Whether the ticket is spam.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the ticket was modified.
+- **`needs_response`** (`bool`) — Whether the ticket needs a response.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`reported_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`rev_org`** (`composite`)
+    - Composite: `_gen:rev_org`
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`rev_org`** (`composite`)
+  - Composite: `_gen:rev_org`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `account`, `rev_org`
+  - **`id`** (`id`) **REQUIRED** — The id of the workspace.
+    - ID type: `revo`
+- **`sentiment`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:sentiment`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`label`** (`enum`) **REQUIRED** — The display label of the enum value.
+    - Allowed: `Delighted`, `Happy`, `Neutral`, `Unhappy`, `Frustrated`
+- **`sentiment_modified_date`** (`timestamp`) — Timestamp when the sentiment was last modified.
+- **`sentiment_summary`** (`text`) — Summary justifying the sentiment.
+- **`severity`** (`enum`) — Severity of the ticket.
+  - Allowed: `blocker`, `high`, `low`, `medium`
+- **`source_channel`** (`text`) — Source channel of the ticket.
+- **`stage`** (`composite`) — Current stage of the ticket.
+  - Composite: `_gen:stage`
+  - **`name`** (`text`) **REQUIRED** — Current stage name of the work item.
+  - **`stage`** (`composite`) — The stage of the ticket.
+    - Composite: `stage.stage`
+- **`state_display_name`** (`text`) — Display name for current state.
+- **`tags`** (`[]composite`) — Tags associated with the ticket.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Timestamp when the ticket is expected to be complete.
+- **`title`** (`text`) **REQUIRED** — Title of the ticket.
+- **`visibility`** (`composite`) — The properties of an enum value.
+  - Composite: `_gen:visibility`
+  - **`id`** (`int`) **REQUIRED** — The unique ID of the enum value.
+  - **`label`** (`text`) **REQUIRED** — The display label of the enum value.
+  - **`ordinal`** (`int`) **REQUIRED** — Used for determining the relative order of the enum value.
+  - **`value`** (`json_value`) — The actual value of the enum value.
+- **`id`** (`id`) **REQUIRED** — The id of the ticket.
+  - ID type: `ticket`

@@ -1,0 +1,75 @@
+# `widget_created` — Schema Reference
+
+## Input Port: `input`
+
+_No input fields (trigger or system-provided)._
+
+## Output Port: `output`
+
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the object was created.
+- **`data_sources`** (`[]composite`) — Data sources provide the backing data tables for the widget.
+  - Composite: `_gen:data_sources`
+  - **`api`** (`composite`) — An API-backed data source.
+    - Composite: `_gen:api`
+  - **`data_source`** (`text`) — The ID of the data source. Meant to be set when the type is data_source.
+  - **`dimensions`** (`[]composite`) — The dimensions (or the extended dimensions) provided by the data source.  These are the categories that can be used to group or segment the measures.
+    - Composite: `_gen:dimensions`
+  - **`external_data_source`** (`composite`) — An referenced data source for a widget.
+    - Composite: `_gen:external_data_source`
+  - **`joins`** (`[]composite`) — A list of possible joins for the data source. Follows foreign key semantics.
+    - Composite: `_gen:joins`
+  - **`measures`** (`[]composite`) — The measures (or the extended measures) provided by the data source.  These are the numerical values that can be analyzed.
+    - Composite: `_gen:measures`
+  - **`oasis`** (`composite`) — An oasis backed data source.
+    - Composite: `_gen:data_sources.oasis`
+  - **`reference_name`** (`text`) **REQUIRED** — The reference name of the data source.
+  - **`type`** (`enum`) **REQUIRED** — The type of the data source.
+    - Allowed: `api`, `data_source`, `data_view`, `external_data_source`, `oasis`
+- **`description`** (`text`) **REQUIRED** — A brief summary of what the widget displays or represents.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`insights`** (`text`) — The insights associated with the widget for agent generated widgets.
+- **`is_draft`** (`bool`) — Whether the widget is a draft widget.
+- **`is_system`** (`bool`) — Whether the widget is a system widget.
+- **`layout`** (`[]composite`) **REQUIRED** — Layout of the widget. It determines the organization of the sub widgets.
+  - Composite: `_gen:layout`
+  - **`position`** (`composite`) — A grid position represents the location and size of a widget or section within  its container (dashboard, tab, or section).
+    - Composite: `_gen:position`
+  - **`reference_id`** (`text`) **REQUIRED** — The reference ID for the element to be laid out. It should be an ID of a tab, section, or widget.
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`external_ref`** (`text`) — External ref is a mutable unique identifier for a user within the Rev organization from your primary customer record. If none is available, a good alternative is the email address/phone number which could uniquely identify the user. If none is specified, a system-generated identifier will be assigned to the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the object was last modified.
+- **`name`** (`text`) — A unique identifying name for the widget (optional).
+- **`sub_widgets`** (`[]composite`) **REQUIRED** — A list of sub-widgets that the widget contains. Each widget can contain  multiple sub-widgets.
+  - Composite: `_gen:sub_widgets`
+  - **`query`** (`composite`) — The query for a widget. This includes measures and dimensions to be visualized.
+    - Composite: `_gen:query`
+  - **`reference_id`** (`text`) **REQUIRED** — A reference ID for the sub-widget. It should be unique within the widget.
+  - **`visualization`** (`composite`) — The visualization for a widget. This includes the type of visualization and any  configuration specific to that type.
+    - Composite: `_gen:visualization`
+- **`title`** (`text`) **REQUIRED** — The title of the widget.
+- **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+  - ID type: `widget`

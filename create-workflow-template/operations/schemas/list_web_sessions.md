@@ -1,0 +1,87 @@
+# `list_web_sessions` — Schema Reference
+
+## Input Port: `input`
+
+- **`browser`** (`[]text`) — List of browsers in which the web session was recorded.
+- **`browser_version`** (`[]text`) — List of browser versions in which the web session was recorded.
+- **`console_logs`** (`composite`) — Filters web sessions based on console logs recorded during the session.
+  - Composite: `_gen:console_logs`
+  - **`body`** (`[]text`) — List of console log message contents to match.
+  - **`log_type`** (`enum`) — List of console log types (e.g., error, warn, log).
+    - Allowed: `error`, `warn`, `log`
+- **`created_at`** (`composite`) — Date range filter for when the session was created.
+  - Composite: `_gen:created_at`
+  - **`after`** (`timestamp`) — Start of the date range for session creation (inclusive).
+  - **`before`** (`timestamp`) — End of the date range for session creation (inclusive).
+  - **`type`** (`enum`) **REQUIRED** — Type of date filter.
+    - Allowed: `range`
+- **`custom_events`** (`composite`) — Filters sessions based on custom events recorded during the session.
+  - Composite: `_gen:custom_events`
+  - **`event_details_filters`** (`[]composite`)
+    - Composite: `_gen:observability-sessions-list-request-session-custom-attribute-filter`
+  - **`event_name`** (`[]text`) — List of custom event names to match within the session.
+- **`device_type`** (`[]text`) — List of device types used during the web session.
+- **`has_console_errors`** (`bool`) — Indicates whether the web session contains console errors.
+- **`has_dead_clicks`** (`bool`) — Indicates whether the web session contains dead click interactions.
+- **`has_network_errors`** (`bool`) — Indicates whether the web session contains network errors.
+- **`has_rage_clicks`** (`bool`) — Indicates whether the web session contains rage click interactions.
+- **`is_anonymous`** (`bool`) — Indicates whether the web session belongs to an anonymous user.
+- **`limit`** (`int`) — The maximum number of sessions to return. The default value is 20 and maximum is 100.
+- **`network_logs`** (`composite`) — Filters sessions based on network request and response characteristics.
+  - Composite: `_gen:network_logs`
+  - **`request_url`** (`[]text`) — List of request URLs made during the session.
+  - **`response_status`** (`[]int`) — List of HTTP response status codes returned in the session.
+  - **`request_method`** (`enum`) — List of HTTP methods used in network requests.
+    - Allowed: `get`, `post`, `put`, `patch`, `delete`, `options`, `head`
+- **`os`** (`[]text`) — List of operating systems on which the web session was recorded.
+- **`page_url`** (`[]text`) — List of page URLs visited during the web session.
+- **`rev_org`** (`[]id`) — List of workspace/organization IDs associated with the session.
+  - ID type: `revo`
+- **`rev_user`** (`[]id`) — List of contact/user IDs associated with the session.
+  - ID type: `revu`
+- **`session_attributes`** (`[]composite`) — Filters sessions based on custom session-level attributes.
+  - Composite: `_gen:observability-sessions-list-request-session-custom-attribute-filter_585728df`
+  - **`attribute_path`** (`text`) **REQUIRED** — Key or path of the attribute to filter on.
+  - **`equals`** (`[]text`) — Array of string values to match exactly.
+  - **`filter_type`** (`enum`) **REQUIRED** — Type of string filter to apply.
+    - Allowed: `string_filter`
+- **`session_duration`** (`composite`) — Filters sessions by total length (duration range in milliseconds).
+  - Composite: `_gen:session_duration`
+  - **`max_ms`** (`int`) **REQUIRED** — Maximum session duration in milliseconds.
+  - **`min_ms`** (`int`) **REQUIRED** — Minimum session duration in milliseconds.
+- **`version_key`** (`text`) **REQUIRED** — Unique app ID to which the session belongs; also referred to as the integration key.
+  - Validation: min_len=1
+- **`type`** (`enum`) **REQUIRED** — Specifies the category of the client where the session occurred Mobile or Web.
+  - Allowed: `web`
+- **`platform`** (`enum`) **REQUIRED** — Indicates the environment where the session was recorded.
+  - Allowed: `web`
+
+## Output Port: `output`
+
+- **`sessions`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:observability-session`
+  - **`console_metadata`** (`composite`) — Summary of console log information captured during a web session.
+    - Composite: `_gen:console_metadata`
+  - **`created_at`** (`timestamp`) **REQUIRED** — The session creation timestamp.
+  - **`dead_click_count`** (`int`) **REQUIRED** — Number of clicks on unresponsive elements during the web session.
+  - **`device_metadata`** (`composite`)
+    - Composite: `_gen:device_metadata`
+  - **`first_page_title`** (`text`) — The title of the first page visited.
+  - **`first_page_url`** (`text`) — The URL of the first page visited.
+  - **`network_metadata`** (`composite`) — Summary of network response status codes recorded during a web session.
+    - Composite: `_gen:network_metadata`
+  - **`page_load_time_ms`** (`int`) — The page load time in milliseconds.
+  - **`rage_click_count`** (`int`) **REQUIRED** — Number of rapid repeated clicks indicating user frustration during the web session.
+  - **`rev_org_id`** (`id`) — The workspace ID associated with this recording.
+    - ID type: `revo`
+  - **`rev_user_id`** (`id`) — The contact ID associated with this recording.
+    - ID type: `revu`
+  - **`session_attributes`** (`composite`) — Custom key-value metadata associated with the session.
+    - Composite: `_gen:session_attributes`
+  - **`session_duration_ms`** (`int`) **REQUIRED** — The session duration in milliseconds.
+  - **`session_id`** (`text`) **REQUIRED** — The unique session identifier.
+  - **`tab_ids`** (`[]text`) — The list of tab IDs in this session.
+  - **`platform`** (`enum`) — The platform type for the device.
+    - Allowed: `web`
+  - **`type`** (`enum`) **REQUIRED** — The type of session.
+    - Allowed: `web`

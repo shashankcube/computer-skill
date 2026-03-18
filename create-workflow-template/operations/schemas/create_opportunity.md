@@ -1,0 +1,123 @@
+# `create_opportunity` — Schema Reference
+
+## Input Port: `input`
+
+- **`account`** (`id`) **REQUIRED** — The ID of the account that the opportunity is associated with.
+  - ID type: `account`
+- **`annual_contract_value`** (`composite`) — Annual contract value of an opportunity in USD
+  - Composite: `_gen:annual_contract_value`
+  - **`amount`** (`text`) **REQUIRED** — The amount.
+  - **`currency`** (`text`) **REQUIRED** — The currency code conforming ISO 4217 standard.
+- **`body`** (`text`) — Body of the opportunity object.
+  - Validation: max_len=65536
+- **`contacts`** (`[]id`) — Contacts involved in the opportunity.
+  - ID type: `revu`
+- **`customer_budget`** (`double`) — Budget of the customer.
+- **`external_ref`** (`text`) — The external reference for the work item. This must be unique within the type of work item.
+  - Validation: min_len=1, max_len=512
+- **`priority`** (`enum`) — Priority of the opportunity.
+  - Allowed: `p0`, `p1`, `p2`, `p3`
+- **`probability`** (`double`) — The probability of winning the deal, lies between 0 to 100.
+- **`reported_by`** (`[]id`) — The users that reported the work.
+  - ID type: `devu`, `revu`, `svcacc`, `sysu`
+- **`tags`** (`[]composite`) — Tags associated with the work item.
+  - Composite: `_gen:tags`
+  - **`id`** (`id`) **REQUIRED** — The ID of the tag.
+    - ID type: `tag`
+- **`target_close_date`** (`timestamp`) — The timestamp for when the opportunity is expected to be complete.
+- **`title`** (`text`) **REQUIRED** — Title of the opportunity object.
+  - Validation: min_len=1, max_len=256
+- **`value`** (`composite`) — The value of the opportunity in USD.
+  - Composite: `_gen:value`
+  - **`amount`** (`text`) **REQUIRED** — The amount.
+  - **`currency`** (`text`) **REQUIRED** — The currency code conforming ISO 4217 standard.
+- **`stage`** (`id`) — The stage of the opportunity.
+  - ID type: `custom_stage`
+- **`owned_by`** (`[]id`) **REQUIRED** — The users that own the opportunity.
+  - ID type: `devu`, `sysu`, `svcacc`
+
+## Output Port: `output`
+
+- **`account`** (`composite`)
+  - Composite: `_gen:account`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — Name of the Organization.
+  - **`id`** (`id`) **REQUIRED** — The id of the account.
+    - ID type: `account`
+- **`annual_contract_value`** (`composite`) — Annual contract value of an opportunity in USD
+  - Composite: `_gen:annual_contract_value`
+  - **`amount`** (`text`) — Amount of the money.
+  - **`currency`** (`text`) — Currency of the money.
+- **`body`** (`text`) — The description of the opportunity.
+- **`created_by`** (`composite`)
+  - Composite: `_gen:created_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`created_date`** (`timestamp`) — Timestamp when the opportunity was created.
+- **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+- **`external_ref`** (`text`) — An opaque key that's associated with the work item that's guaranteed to be unique across all work items of same type (issue, ticket, etc).
+- **`modified_by`** (`composite`)
+  - Composite: `_gen:modified_by`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`display_picture`** (`composite`)
+    - Composite: `_gen:display_picture`
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `rev_user`, `service_account`, `sys_user`
+  - **`id`** (`id`) **REQUIRED** — Globally unique object ID.
+    - ID type: `devu`, `sysu`, `svcacc`
+- **`modified_date`** (`timestamp`) — Timestamp when the opportunity was last modified.
+- **`owned_by`** (`[]composite`) **REQUIRED**
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`reported_by`** (`[]composite`)
+  - Composite: `_gen:user-summary`
+  - **`display_id`** (`text`) — Human-readable object ID unique to the Dev organization.
+  - **`display_name`** (`text`) — The user's display name. The name is non-unique and mutable.
+  - **`email`** (`text`) — Email address of the user.
+  - **`full_name`** (`text`) — Full name of the user.
+  - **`state`** (`enum`) — State of the user.
+    - Allowed: `active`, `deactivated`, `deleted`, `locked`, `shadow`, `unassigned`
+  - **`id`** (`id`) **REQUIRED** — The id of the user.
+    - ID type: `devu`, `sysu`, `svcacc`
+  - **`type`** (`enum`) **REQUIRED**
+    - Allowed: `dev_user`, `service_account`, `sys_user`
+- **`stage`** (`composite`) — Describes the current stage of a opportunity
+  - Composite: `_gen:stage`
+  - **`name`** (`text`) **REQUIRED** — Describes the current stage of a opportunity
+- **`state_display_name`** (`text`) — Display name for current state.
+- **`tags`** (`[]composite`) — Tags associated with the object.
+  - Composite: `_gen:tags`
+  - **`tag`** (`composite`)
+    - Composite: `_gen:tag`
+- **`target_close_date`** (`timestamp`) — Timestamp when the opportunity is expected to be closed.
+- **`title`** (`text`) **REQUIRED** — Title of the opportunity.
+- **`value`** (`composite`) — The value of the opportunity in USD.
+  - Composite: `_gen:value`
+  - **`amount`** (`text`) — Amount of the money.
+  - **`currency`** (`text`) — Currency of the money.
+- **`id`** (`id`) **REQUIRED** — The opportunity which was created.
+  - ID type: `opportunity`
