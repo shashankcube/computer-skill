@@ -1,71 +1,37 @@
 # computer-skill
 
-A collection of [DevRev Computer Skills](https://github.com/devrev/computer-skills) — AI-powered skills that extend Claude Code with DevRev-specific capabilities.
+AI-powered skills for Claude Code — sales intelligence, deal management, workflow automation, and agent debugging, built on DevRev.
 
 ## Skills
 
-### Create Workflow Template
-
-Generate valid DevRev workflow template JSON from natural language descriptions.
-
-**What it does:** Takes a plain-English description of a workflow and produces a production-ready DevRev workflow template that can be imported directly into DevRev.
-
-**Usage:**
-
-```
-/create-workflow-template "When a ticket is created with critical priority, send a Slack notification and assign it to the on-call team"
-```
-
-**How it works:**
-
-1. Parses your natural language description to identify triggers, actions, conditions, and loops
-2. Looks up the correct operation slugs, namespaces, and schemas from 130+ operation definitions
-3. References validated example templates to match production format
-4. Outputs a complete workflow JSON ready for import
-
-**Supported operations include:**
-
-- **Triggers** — ticket/issue/conversation created/updated, timer, webhook, and more
-- **Actions** — create/update tickets, issues, conversations; send emails/notifications; HTTP calls; invoke code; AI agent interactions
-- **Controls** — if/else branching, while loops, routers, delays
-- **Blockings** — loop over lists (articles, issues, conversations, etc.)
-
-### Directory Structure
-
-```
-create-workflow-template/
-  create-workflow-template.md   # Main skill definition
-  examples/                     # 11 example templates (4 validated working-* templates)
-  operations/
-    actions.md                  # Action operations reference
-    triggers.md                 # Trigger operations reference
-    controls.md                 # Control flow operations reference
-    blockings.md                # Blocking/loop operations reference
-    schema-index.md             # Schema lookup index
-    schemas/                    # 130 detailed operation schemas
-```
-
-### Example Templates
-
-| Template | Description |
-|----------|-------------|
-| `working-csat-score-on-ticket-resolved.json` | Set CSAT score when a ticket is resolved |
-| `working-enhancement-replace-agent.json` | Agent-based enhancement replacement workflow |
-| `working-invoke-code-sample.json` | Custom code invocation example |
-| `working-loop-variable-sample.json` | Loop with variable manipulation |
+| Skill | Description |
+|-------|-------------|
+| **create-workflow-template** | Generate DevRev workflow template JSON from natural language descriptions |
+| **deal-review-meddpicc** | Full MEDDPICC deal assessment with evidence-tagged scoring |
+| **sales-call-plan-coach** | Interactive call plan coaching using Franklin Covey methodology |
+| **account-evaluation** | Account health report combining DevRev pipeline, engagement, and external data |
+| **account-research** | Company/person research — web + DevRev + enrichment layers |
+| **customer-brief** | Pre-meeting briefing with internal intelligence and external context |
+| **sales-search-and-lookup** | Query pipeline, forecast, accounts, and opportunities via natural language |
+| **sales-context** | Always-active behavioral skill for consistent sales terminology |
+| **next-step-for-opportunity** | Extract planned actions from meetings, emails, and discussions |
+| **trace-diagnosis** | Debug Computer agent execution traces and auto-create engineering tickets |
 
 ## Setup
 
-To use this skill with Claude Code, copy the `create-workflow-template/` directory into your project's `.claude/skills/` folder:
+Copy any skill folder into your project's `.claude/skills/` directory:
 
 ```bash
-# From your project root
 mkdir -p .claude/skills
-cp -r create-workflow-template .claude/skills/
+cp -r <skill-name> .claude/skills/
 ```
 
-Then invoke it with `/create-workflow-template` in Claude Code.
+Or install with the skills CLI:
+
+```bash
+npx skills add https://github.com/shashankcube/computer-skill --skill <skill-name>
+```
 
 ## License
 
-This skill is based on the [DevRev Computer Skills](https://github.com/devrev/computer-skills) repository.
+Based on [DevRev Computer Skills](https://github.com/devrev/computer-skills).
