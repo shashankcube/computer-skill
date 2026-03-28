@@ -5,11 +5,11 @@ description: >
   Use when users want to create a skill from scratch, update or optimize an existing skill,
   run evals to test a skill, benchmark skill performance with variance analysis, or optimize
   a skill's description for better triggering accuracy. This skill is especially powerful for
-  creating DevRev-integrated skills that leverage MCP tools (DevRev API, SQL/KG tools, Slack,
-  GitHub, Datadog, etc.), CRM workflows, product management dashboards, sales reports,
-  operational analytics, sprint tools, and any skill that needs to query or mutate data
-  through available platform tools. Use this skill whenever the user mentions creating,
-  building, improving, or testing a skill — even if they don't use the word "skill" explicitly
+  creating skills that leverage whatever MCP tools and platform capabilities are available
+  in the current session — CRM workflows, product management dashboards, sales reports,
+  operational analytics, sprint tools, data querying, and any skill that needs to interact
+  with platform tools. Use this skill whenever the user mentions creating, building,
+  improving, or testing a skill — even if they don't use the word "skill" explicitly
   but describe a repeatable workflow they want to capture.
 ---
 
@@ -60,26 +60,13 @@ Before writing any skill that interacts with platform tools, you MUST discover w
 
 Use whichever approach works in the current client — not all environments have the same discovery mechanisms:
 
-1. **Check the tool list directly**: The most reliable method. Look at the tools available to you in the current session — they're listed in system reminders, deferred tool lists, or simply visible as callable tools. Scan through the names and group them by prefix/domain (e.g., `mcp__plugin_devrev_devrev__*` are DevRev tools, `mcp__plugin_devrev_slack__*` are Slack tools). This works everywhere, no special tool required.
+1. **Check the tool list directly**: The most reliable method. Look at the tools available to you right now in this session — they're listed in system reminders, deferred tool lists, or simply visible as callable tools. Scan through the names and group them by prefix (e.g., tools starting with `mcp_devrev__*` are DevRev tools, `mcp_slack__*` are messaging tools, etc.). This works in every client, no special tool required.
 
-2. **Use ToolSearch (if available)**: In Claude Code, the `ToolSearch` tool lets you search for tools by keyword. Use it when you want to find tools by capability rather than scanning the full list:
-   - `"devrev work issue"` — find DevRev work item tools
-   - `"sql execute query"` — find SQL execution tools
-   - `"slack message"` — find Slack messaging tools
-   - `"github pull request"` — find GitHub PR tools
-   - `"datadog logs metrics"` — find observability tools
-
-   If `ToolSearch` isn't available, just scan the tool list — it works just as well.
+2. **Use ToolSearch (if available)**: In some clients like Claude Code, a `ToolSearch` tool lets you search for tools by keyword. If it's available, use it to find tools by capability. If it's not available, just scan the tool list — it works just as well.
 
 3. **Read MCP server instructions**: System reminders often include instructions from MCP servers explaining how their tools work. These are valuable context for understanding what each tool category can do.
 
-4. **Group tools by domain**: When designing a skill, categorize the discovered tools:
-   - **Data tools**: SQL execution, knowledge graph queries, search
-   - **DevRev tools**: Work items, parts, sprints, timeline entries
-   - **Communication tools**: Slack messages, GitHub comments/PRs
-   - **Observability tools**: Datadog logs, metrics, monitors
-   - **File tools**: Filesystem read/write, GitHub file operations
-   - **Browser tools**: Playwright for UI testing and screenshots
+4. **Group tools by domain**: When designing a skill, categorize whatever tools you found into logical groups — data querying, work management, communication, file operations, browser automation, observability, etc. The exact categories depend on what's available in this session.
 
 ### What to put in the skill about tools
 
@@ -87,23 +74,21 @@ Skills should NOT hardcode tool lists. Instead, they should:
 
 - **Describe the capability needed**, not the specific tool name. Example: "Query the organization's data using SQL" rather than "Use the ExecuteSQL tool".
 - **Reference tool categories** so the model can discover the right tool at runtime. Example: "Use the available knowledge graph tools to understand the schema before querying."
-- **Include a tool discovery step** in the skill workflow. Example: "First, check what tools are available for interacting with DevRev — scan the tool list or use ToolSearch if available."
+- **Include a tool discovery step** in the skill workflow. Example: "First, list the tools available in your session and identify which ones handle [the relevant domain]."
 
 The reason is simple: a skill might be used in environments with different tool configurations. A skill that says "Use ExecuteSQL" will break if that tool isn't available, but a skill that says "Execute the SQL query using the available SQL execution tool" will adapt.
 
-### Common tool patterns in this environment
+### Discovering tools at skill-creation time vs skill-execution time
 
-While you should always discover tools dynamically, here are common patterns you'll see:
+There are two moments where tool discovery matters:
 
-- **DevRev MCP**: Work management (create/update/list works, parts, sprints), timeline entries, search, subtypes, stage transitions
-- **SQL/KG tools**: Schema discovery (GetKGSchema, GetNodeSchema), SQL execution (ExecuteSQL), natural language to SQL (NLToSQL) — these are particularly powerful for analytics, reporting, and dashboard skills
-- **GitHub MCP**: Repository operations, PR management, code search, file operations
-- **Slack MCP**: Channel messaging, thread replies, user search
-- **Datadog MCP**: Logs, metrics, monitors, incidents, dashboards, traces
-- **Playwright MCP**: Browser automation, screenshots, UI testing
-- **Filesystem MCP**: File read/write/search beyond the working directory
+1. **When you (the skill creator) are writing the skill**: List the tools available in your current session to understand what capabilities exist. This informs what the skill can do and what patterns to use.
 
-Read `references/tool-patterns.md` for detailed guidance on writing skills that leverage these tool patterns effectively.
+2. **When the skill runs later**: The skill itself should instruct the model to check what tools are available at runtime, because the environment may differ from when the skill was written.
+
+Both should rely on listing the actual tools present — not on remembering tool names from a previous session.
+
+Read `references/tool-patterns.md` for detailed guidance on writing skills that leverage platform tools effectively.
 
 ---
 
@@ -116,7 +101,7 @@ Start by understanding the user's intent. The current conversation might already
 1. What should this skill enable Claude to do?
 2. When should this skill trigger? (what user phrases/contexts)
 3. What's the expected output format?
-4. **What platform tools does this skill need?** Discover them now — run ToolSearch for the relevant domains and note what's available.
+4. **What platform tools does this skill need?** Discover them now — list the tools available in the current session and note which ones are relevant.
 5. Should we set up test cases to verify the skill works? Skills with objectively verifiable outputs (file transforms, data extraction, code generation, fixed workflow steps) benefit from test cases. Skills with subjective outputs (writing style, art) often don't need them. Suggest the appropriate default based on the skill type, but let the user decide.
 
 ### Interview and Research
@@ -125,9 +110,9 @@ Proactively ask questions about edge cases, input/output formats, example files,
 
 Check available MCPs - if useful for research (searching docs, finding similar skills, looking up best practices), research in parallel via subagents if available, otherwise inline. Come prepared with context to reduce burden on the user.
 
-**For skills that involve data querying or analytics**: Understand the data model first. If KG/schema tools are available, use them to explore what objects and relationships exist. This informs how the skill should guide the model to structure queries.
+**For skills that involve data querying or analytics**: Understand the data model first. List the available tools — if there are schema discovery or knowledge graph tools, use them to explore what objects and relationships exist. This informs how the skill should guide the model to structure queries.
 
-**For skills that involve DevRev workflows**: Understand the object lifecycle. DevRev has specific stage transitions, subtypes, and relationships between works, parts, and sprints. Check what's available via the DevRev MCP tools.
+**For skills that involve workflow management**: Understand the object lifecycle. List the available work management tools to see what operations are supported (create, update, stage transitions, linking, etc.). The skill should guide the model to respect valid transitions and relationships.
 
 ### Write the SKILL.md
 
@@ -184,12 +169,12 @@ When a skill relies on external tools (MCP servers, SQL, APIs), follow these pat
 
 1. **Describe intent, not implementation**: Write "Query the knowledge graph to find all tickets assigned to the user" not "Call GetKGSchema then GetNodeSchema then ExecuteSQL with SELECT..."
 
-2. **Include a discovery phase**: Every tool-dependent skill should start with a step like "First, verify that the required tools are available. Use ToolSearch to find [category] tools."
+2. **Include a discovery phase**: Every tool-dependent skill should start with a step like "First, list the tools available in your session and identify which ones handle [the relevant domain]."
 
-3. **Handle graceful degradation**: If a tool might not be available, say what to do instead. "If Slack tools are available, post a summary to the channel. Otherwise, write the summary to a file."
+3. **Handle graceful degradation**: If a tool might not be available, say what to do instead. "If messaging tools are available, post a summary. Otherwise, write the summary to a file."
 
-4. **Chain tools logically**: Many DevRev workflows follow a pattern:
-   - Discover schema/structure first (KG tools, list subtypes)
+4. **Chain tools logically**: Many platform workflows follow a pattern:
+   - Discover schema/structure first (schema tools, list subtypes)
    - Query or filter data (SQL tools, search, list operations)
    - Transform or analyze (scripts, inline logic)
    - Present or act (create work items, post messages, generate reports)
@@ -247,6 +232,22 @@ Save test cases to `evals/evals.json`. Don't write assertions yet — just the p
 ```
 
 See `references/schemas.md` for the full schema (including the `assertions` field, which you'll add later).
+
+### Quick Smoke Test (optional but recommended)
+
+Before jumping into the full eval framework, offer to do a quick smoke test. This is especially useful for skills that use platform tools — it catches basic issues (wrong tool names, broken workflows, missing prerequisites) before investing time in formal evals.
+
+The idea is simple: after writing the skill draft, try running one test prompt yourself (inline, not via a subagent) and see if it works end-to-end. Walk through the skill's steps, call the tools it references, and check if the output makes sense.
+
+If it works: great, move on to formal evals.
+If it fails: fix the obvious issues first, then re-test before spinning up the full eval machinery.
+
+Tell the user something like: "I've drafted the skill. Want me to do a quick test run on one example before we set up formal evaluations? This will catch any obvious issues." If they say yes, pick the most representative test case and run through it. If they say no or want to go straight to evals, that's fine too.
+
+This is especially valuable when the skill involves:
+- Tool chains (data query -> transform -> act) — to verify the tools actually work together
+- Schema-dependent queries — to verify field names and object structures are correct
+- Multi-step workflows — to verify the ordering and transitions make sense
 
 ## Running and evaluating test cases
 
@@ -556,7 +557,7 @@ The agents/ directory contains instructions for specialized subagents. Read them
 
 The references/ directory has additional documentation:
 - `references/schemas.md` — JSON structures for evals.json, grading.json, etc.
-- `references/tool-patterns.md` — Patterns for writing skills that leverage platform tools (DevRev, SQL, Slack, GitHub, Datadog, etc.)
+- `references/tool-patterns.md` — Patterns for writing skills that leverage platform tools
 
 ---
 

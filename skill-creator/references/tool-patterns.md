@@ -5,10 +5,10 @@ This reference covers patterns for writing skills that leverage platform tools e
 ## Table of Contents
 
 1. [Tool Discovery Pattern](#tool-discovery-pattern)
-2. [Data Querying Skills (SQL/KG)](#data-querying-skills)
-3. [DevRev Workflow Skills](#devrev-workflow-skills)
-4. [Communication Skills (Slack/GitHub)](#communication-skills)
-5. [Observability Skills (Datadog)](#observability-skills)
+2. [Data Querying Skills](#data-querying-skills)
+3. [Workflow Management Skills](#workflow-management-skills)
+4. [Communication Skills](#communication-skills)
+5. [Observability Skills](#observability-skills)
 6. [Multi-Tool Orchestration](#multi-tool-orchestration)
 7. [Common Skill Archetypes](#common-skill-archetypes)
 
@@ -21,14 +21,15 @@ Every skill that depends on external tools should include a discovery step. Here
 ```markdown
 ## Prerequisites
 
-Before starting, verify the tools you need are available:
+Before starting, list the tools available in your current session:
 
-1. Scan the available tool list for [category] tools (look for tools with names matching "[relevant prefix/pattern]"), or use ToolSearch with keywords like "[relevant keywords]" if ToolSearch is available
-2. If the required tools aren't available, inform the user what's needed and stop
-3. Note the exact tool names for use in subsequent steps
+1. Scan the tool list and identify tools relevant to [the domain this skill needs]
+2. Group them by capability (data querying, work management, messaging, etc.)
+3. If the required capabilities aren't available, inform the user what's needed and stop
+4. Note the exact tool names for use in subsequent steps
 ```
 
-Why this matters: A skill installed in one environment might be used in another where different MCP servers are configured. Tool discovery makes skills portable. The discovery step should work regardless of whether `ToolSearch` is available — scanning the tool list directly is always an option.
+Why this matters: A skill installed in one environment might be used in another where different tools are configured. Tool discovery makes skills portable. The discovery step should work in any client — just list the tools you have.
 
 ---
 
@@ -43,14 +44,15 @@ Skills that query organizational data (reports, dashboards, analytics) typically
 
 ### Step 1: Understand the data model
 Before writing any queries, discover what data is available:
-- Use the knowledge graph schema tools to get an overview of all objects and relationships
+- Look for schema or knowledge graph tools in your tool list
+- Use them to get an overview of all objects and relationships
 - For specific objects you'll query, get their detailed schema (fields, types, relationships)
 - Note which objects are global vs organization-specific
 
 ### Step 2: Construct queries
 Based on the schema and the user's request:
 - Build SQL queries that use the correct field names from the schema
-- Use the natural-language-to-SQL tools if available — they have context on query syntax
+- If natural-language-to-SQL tools are available, use them — they have context on query syntax
 - Always validate field names against the schema before executing
 
 ### Step 3: Execute and validate
@@ -80,25 +82,26 @@ Based on the schema and the user's request:
 
 ---
 
-## DevRev Workflow Skills
+## Workflow Management Skills
 
-Skills that interact with DevRev's work management system (issues, tickets, enhancements, sprints).
+Skills that interact with work management systems (issues, tickets, enhancements, sprints).
 
 ### Object Lifecycle Awareness
 
-DevRev objects have specific lifecycles with valid stage transitions. A skill that creates or updates work items should:
+Work objects typically have specific lifecycles with valid stage transitions. A skill that creates or updates work items should:
 
 ```markdown
-## Working with DevRev objects
+## Working with work items
 
-### Before creating or updating work items
-1. Check available subtypes for the work type you're creating (use list subtypes tools)
-2. For updates, verify the stage transition is valid (use stage transition tools)
-3. When linking objects, understand the relationship types available
+### Before creating or updating
+1. List the available work management tools in your session
+2. Check available subtypes for the work type you're creating
+3. For updates, verify the stage transition is valid
+4. When linking objects, understand the relationship types available
 
 ### Creating work items
 - Set the appropriate subtype based on the nature of the work
-- Assign to the right part (product area) if known
+- Assign to the right product area if known
 - Add to the current sprint if the work is immediate
 - Include a clear title and description with enough context for anyone to pick it up
 
@@ -108,7 +111,7 @@ DevRev objects have specific lifecycles with valid stage transitions. A skill th
 - Add timeline entries to explain why changes were made
 ```
 
-### Common DevRev skill patterns
+### Common workflow skill patterns
 
 - **Triage skills**: Read incoming items, categorize, assign, set priority
 - **Sprint management**: Plan sprints, track progress, identify blockers
@@ -119,7 +122,7 @@ DevRev objects have specific lifecycles with valid stage transitions. A skill th
 
 ## Communication Skills
 
-Skills that post to Slack, create GitHub issues/PRs, or otherwise communicate externally.
+Skills that post messages, create issues/PRs, or otherwise communicate externally.
 
 ### The Confirm-Before-Send Pattern
 
@@ -134,14 +137,14 @@ External communication is hard to undo. Before posting:
 Exception: If the user has explicitly said "just post it" or the skill is designed for automated posting, skip the confirmation. But default to confirming.
 ```
 
-### Slack-specific patterns
+### Messaging patterns
 
-- **Channel discovery**: Use list channels / search to find the right channel
+- **Channel/recipient discovery**: Use list/search tools to find the right destination
 - **Thread awareness**: When responding to a discussion, post in the thread, not the channel
-- **Formatting**: Use Slack's markdown (mrkdwn) — it's slightly different from standard markdown
-- **User mentions**: Search for users by name to get their IDs for @mentions
+- **Formatting**: Different platforms have different markdown flavors — the skill should note this
+- **User mentions**: Search for users by name to get their IDs for mentions
 
-### GitHub-specific patterns
+### Code collaboration patterns
 
 - **PR creation**: Include a clear title, description with context, and link to relevant issues
 - **Code review**: Use inline comments on specific files/lines, not just top-level comments
@@ -151,7 +154,7 @@ Exception: If the user has explicitly said "just post it" or the skill is design
 
 ## Observability Skills
 
-Skills that query Datadog or similar monitoring platforms.
+Skills that query monitoring platforms for logs, metrics, traces, and incidents.
 
 ### The Context-First Pattern
 
@@ -164,6 +167,7 @@ Skills that query Datadog or similar monitoring platforms.
 - Are there known incidents or deployments in that window?
 
 ### Step 2: Gather signals
+- List the observability tools available in your session
 - Search logs with relevant filters (service, severity, time range)
 - Check metrics for the affected service
 - Look for related traces if available
@@ -194,16 +198,16 @@ Many valuable skills combine multiple tool categories. Here's how to structure t
 This skill uses multiple platform capabilities in sequence:
 
 ### Phase 1: Gather (data tools)
-- Query the relevant data using SQL/KG tools
-- Pull context from DevRev work items
+- Query the relevant data using available querying tools
+- Pull context from work items
 
 ### Phase 2: Analyze (compute)
 - Process the gathered data (scripts, inline analysis)
 - Identify patterns, anomalies, or action items
 
-### Phase 3: Act (communication/workflow tools)
+### Phase 3: Act (workflow/communication tools)
 - Create work items for action items found
-- Post summaries to relevant Slack channels
+- Post summaries to relevant channels (if messaging tools are available)
 - Update dashboards or reports
 
 ### Phase 4: Verify
@@ -217,63 +221,63 @@ When skills chain tools, make the dependencies explicit:
 
 ```markdown
 ## Tool chain
-This skill needs tools from these categories (check availability before starting):
+This skill needs tools from these categories (list your tools and check availability before starting):
 1. **Data querying** — to pull organizational data
 2. **Work management** — to create/update work items based on findings
-3. **Messaging** — to notify stakeholders (optional, gracefully degrade if unavailable)
+3. **Messaging** — to notify stakeholders (optional — gracefully degrade if unavailable)
 ```
 
 ---
 
 ## Common Skill Archetypes
 
-These are the most common types of skills people build in DevRev-like environments. Use these as starting points:
+These are the most common types of skills people build. Use these as starting points:
 
 ### 1. Report Generator
 **Purpose**: Pull data, analyze it, produce a formatted report
-**Tools needed**: SQL/KG (required), filesystem (for output)
+**Tools needed**: Data querying (required), filesystem (for output)
 **Key pattern**: Schema-first, iterative query refinement, structured output template
 
 ### 2. Workflow Automator
 **Purpose**: Automate a multi-step process (triage, sprint planning, release tracking)
-**Tools needed**: DevRev (required), Slack (optional for notifications)
+**Tools needed**: Work management (required), messaging (optional for notifications)
 **Key pattern**: Object lifecycle awareness, confirm-before-act, audit trail via timeline entries
 
 ### 3. Dashboard Builder
 **Purpose**: Create visual or data-driven dashboards from organizational data
-**Tools needed**: SQL/KG (required), filesystem (for HTML/charts)
+**Tools needed**: Data querying (required), filesystem (for HTML/charts)
 **Key pattern**: Schema-first, aggregation queries, HTML/chart generation scripts
 
 ### 4. Investigation Assistant
 **Purpose**: Help debug production issues by correlating signals
-**Tools needed**: Datadog (required), DevRev (optional for linked incidents)
+**Tools needed**: Observability (required), work management (optional for linked incidents)
 **Key pattern**: Context-first, multi-signal correlation, timeline reconstruction
 
 ### 5. Communication Drafter
 **Purpose**: Draft and send messages (status updates, incident comms, release notes)
-**Tools needed**: Slack or GitHub (required), DevRev (for data)
+**Tools needed**: Messaging (required), work management (for data)
 **Key pattern**: Confirm-before-send, audience-aware tone, structured templates
 
 ### 6. Data Explorer
 **Purpose**: Help users explore and understand their organizational data
-**Tools needed**: SQL/KG (required)
+**Tools needed**: Data querying (required)
 **Key pattern**: Interactive schema exploration, progressive query building, explain-as-you-go
 
 ### 7. Sprint/Project Tracker
 **Purpose**: Track sprint progress, identify risks, generate status reports
-**Tools needed**: DevRev (required), Slack (optional)
+**Tools needed**: Work management (required), messaging (optional)
 **Key pattern**: Aggregate work item states, compare against goals, highlight blockers
 
 ### 8. Deck/Presentation Builder
 **Purpose**: Create slide decks or presentations from organizational data
-**Tools needed**: SQL/KG (for data), filesystem (for output), templates (in assets/)
+**Tools needed**: Data querying (for data), filesystem (for output), templates (in assets/)
 **Key pattern**: Data gathering -> narrative construction -> template population -> output generation
 
 ---
 
 ## Anti-Patterns to Avoid
 
-1. **Hardcoding tool names**: Don't write `Use mcp__plugin_devrev_devrev__create_work`. Write "Create a work item using the available DevRev tools."
+1. **Hardcoding tool names**: Don't write `Use mcp_devrev__create_work`. Write "Create a work item using the available work management tools."
 
 2. **Assuming tool availability**: Don't write a skill that silently fails if a tool is missing. Include discovery and graceful degradation.
 
@@ -281,6 +285,6 @@ These are the most common types of skills people build in DevRev-like environmen
 
 4. **Skipping confirmation for external actions**: Creating issues, posting messages, and updating work items should be confirmed with the user unless the skill is explicitly designed for automation.
 
-5. **Monolithic tool chains**: Don't write a skill that requires 10 different MCP servers. Keep tool dependencies minimal and make optional tools truly optional.
+5. **Monolithic tool chains**: Don't write a skill that requires 10 different tool categories. Keep tool dependencies minimal and make optional tools truly optional.
 
 6. **Tool-specific error messages**: Don't say "ExecuteSQL returned error 422". Say "The query failed — the error suggests [interpretation]. Try [alternative approach]."
