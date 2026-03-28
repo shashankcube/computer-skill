@@ -10,7 +10,9 @@ description: >
   operational analytics, sprint tools, data querying, and any skill that needs to interact
   with platform tools. Use this skill whenever the user mentions creating, building,
   improving, or testing a skill — even if they don't use the word "skill" explicitly
-  but describe a repeatable workflow they want to capture.
+  but describe a repeatable workflow they want to capture. Also use this when a user
+  wants to turn the current conversation or session into a reusable skill ("make this
+  a skill", "save this workflow", "I want to do this again", "turn this into a command").
 ---
 
 # Skill Creator
@@ -94,9 +96,29 @@ Read `references/tool-patterns.md` for detailed guidance on writing skills that 
 
 ## Creating a skill
 
+### Extracting a Skill from the Current Session
+
+One of the most common ways skills get created: the user has been working with you on something — debugging, building a report, running a workflow — and it went well, so they say something like "turn this into a skill", "can we save this as a skill", "I want to do this again next time", or "make this repeatable".
+
+When this happens, the conversation history IS the skill spec. Mine it thoroughly:
+
+1. **Replay the session mentally.** Walk through what happened from start to finish. What was the user trying to accomplish? What did you do? What tools did you call, in what order? Where did you hit dead ends and have to course-correct?
+
+2. **Extract the workflow, not the transcript.** The session likely had false starts, tangents, and debugging. The skill should capture the clean version — the path that works, informed by the mistakes you made along the way. If you tried three approaches and the third one worked, the skill should teach the third approach (but maybe note the pitfalls of the first two if they're common traps).
+
+3. **Identify the tools used.** Scroll through the conversation and note every tool call you made. Which ones were essential to the workflow? Which were incidental (e.g., reading a file to orient yourself)? The essential ones become the skill's tool requirements.
+
+4. **Capture the user's corrections.** These are gold. If the user said "no, don't do it that way" or "the format should be X not Y", those corrections should become explicit instructions in the skill. The user already debugged the approach — encode that knowledge.
+
+5. **Note the input/output contract.** What did the user provide (a URL, a file, a question, a ticket ID)? What did they get back (a report, a PR, a Slack message, a dashboard)? This becomes the skill's interface.
+
+6. **Generalize.** The session was about one specific instance (one ticket, one report, one sprint). The skill needs to work for any instance. Replace specific values with descriptions of what goes there. "Query tickets for sprint SPR-123" becomes "Query tickets for the target sprint".
+
+After extracting, present a summary to the user: "Here's what I think the skill should do, based on our session: [summary]. Does this look right, or should I adjust anything?" Then proceed to writing the SKILL.md.
+
 ### Capture Intent
 
-Start by understanding the user's intent. The current conversation might already contain a workflow the user wants to capture (e.g., they say "turn this into a skill"). If so, extract answers from the conversation history first — the tools used, the sequence of steps, corrections the user made, input/output formats observed. The user may need to fill the gaps, and should confirm before proceeding to the next step.
+If the user is starting from scratch (not extracting from a session), start by understanding their intent:
 
 1. What should this skill enable Claude to do?
 2. When should this skill trigger? (what user phrases/contexts)
